@@ -1,6 +1,8 @@
 package com.BEJ.Bej.controller;
 
 import com.BEJ.Bej.dto.request.UserCreationRequest;
+import com.BEJ.Bej.dto.request.UserUpdateRequest;
+import com.BEJ.Bej.dto.response.UserResponse;
 import com.BEJ.Bej.entity.User;
 import com.BEJ.Bej.service.UserService;
 import lombok.AccessLevel;
@@ -29,7 +31,13 @@ public class UserController {
     }
 
     @GetMapping("/profile/{userId}")
-    User getUser(@PathVariable("userId") String userId){
+    UserResponse getUser(@PathVariable("userId") String userId){
         return userService.getUser(userId);
+    }
+
+    @PutMapping("/profile/{userId}")
+    UserResponse updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+//        System.out.println("Request Data: " + request);
+        return userService.updateUser(userId, request);
     }
 }
