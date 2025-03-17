@@ -20,8 +20,5 @@ public class ProductResponse {
     int originalPrice;
     int discount;
     int finalPrice;
-//    @ElementCollection
-//    @CollectionTable(name = "product_specs", joinColumns = @JoinColumn(name = "product_id"))
-//    @Column(name = "spec")
-//    private List<String> specs;
+    private List<String> specs;
 }

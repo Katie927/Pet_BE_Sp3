@@ -25,8 +25,7 @@ public class AuthenticationController {
 
     AuthenticationService authenticationService;
 
-//    @PostMapping("/log-in")
-    @PostMapping("/token")
+    @PostMapping("/log-in")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         var result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
@@ -37,6 +36,7 @@ public class AuthenticationController {
     @PostMapping("/introspect")
     ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
             throws ParseException, JOSEException {
+        System.out.println("Received request: " + request);
         var result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)

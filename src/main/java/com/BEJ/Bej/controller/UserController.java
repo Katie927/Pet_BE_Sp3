@@ -1,10 +1,11 @@
 package com.BEJ.Bej.controller;
 
-import com.BEJ.Bej.dto.request.UserCreationRequest;
-import com.BEJ.Bej.dto.request.UserUpdateRequest;
+import com.BEJ.Bej.dto.request.ApiResponse;
+import com.BEJ.Bej.dto.request.UserRequest.UserCreationRequest;
+import com.BEJ.Bej.dto.request.UserRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
-import com.BEJ.Bej.entity.User;
 import com.BEJ.Bej.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,13 +22,18 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    User createUser(@RequestBody UserCreationRequest request){
-        return userService.createUser(request);
+    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(request));
+
+        return apiResponse;
     }
 
     @GetMapping
-    List<User> getUser(){
-        return userService.getUsers();
+    ApiResponse<List<UserResponse>> getUsers(){
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getUsers())
+                .build();
     }
 
     @GetMapping("/profile/{userId}")

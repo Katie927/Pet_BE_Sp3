@@ -1,6 +1,9 @@
 package com.BEJ.Bej.service;
 
+import com.BEJ.Bej.dto.request.ApiResponse;
+import com.BEJ.Bej.dto.response.ProductResponse;
 import com.BEJ.Bej.entity.Product;
+import com.BEJ.Bej.mapper.ProductMapper;
 import com.BEJ.Bej.repository.ProductRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,14 +24,16 @@ import java.util.List;
 @Transactional
 public class ProductService {
 
-    private final ProductRepository productRepository;
-    private final ObjectMapper objectMapper; // Jackson ObjectMapper để đọc JSON
+    ProductRepository productRepository;
+    ProductMapper productMapper;
+
+//    private final ObjectMapper objectMapper; // Jackson ObjectMapper để đọc JSON
 
 //    @PostConstruct
 //    public void importJsonData() {
 //        try {
 //            // Đọc file JSON
-//            File file = new File("D:/Python3/New folder/hoanghamobile_selenium.json");
+//            File file = new File("D:/Python3/New folder/hoanghamobile_selenium_updated.json");
 //
 //            // Chuyển đổi JSON thành List<Product>
 //            List<Product> products = objectMapper.readValue(file, new TypeReference<List<Product>>() {});
@@ -42,8 +47,8 @@ public class ProductService {
 //        }
 //    }
 
-    public List<Product> getProducts(){
-        return productRepository.findAll();
+    public List<ProductResponse> getProducts(){
+        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
     }
 
 }

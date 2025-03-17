@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Data
@@ -29,4 +30,5 @@ public class User {
     String email;
     String phoneNumber;
 
+    Set<String> roles;
 }

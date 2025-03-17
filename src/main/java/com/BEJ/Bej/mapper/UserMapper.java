@@ -1,7 +1,7 @@
 package com.BEJ.Bej.mapper;
 
-import com.BEJ.Bej.dto.request.UserCreationRequest;
-import com.BEJ.Bej.dto.request.UserUpdateRequest;
+import com.BEJ.Bej.dto.request.UserRequest.UserCreationRequest;
+import com.BEJ.Bej.dto.request.UserRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
 import com.BEJ.Bej.entity.User;
 import org.mapstruct.*;

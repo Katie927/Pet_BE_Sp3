@@ -1,4 +1,4 @@
-package com.BEJ.Bej.dto.request;
+package com.BEJ.Bej.dto.request.UserRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -6,14 +6,17 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateRequest {
+public class UserCreationRequest {
+
     String fullName;
     String password;
     String address;
     LocalDate dob;
+    String email;
     String phoneNumber;
+
 }
