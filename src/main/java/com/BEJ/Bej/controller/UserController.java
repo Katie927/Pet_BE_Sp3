@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
     UserService userService;
@@ -31,14 +34,27 @@ public class UserController {
 
     @GetMapping
     ApiResponse<List<UserResponse>> getUsers(){
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getUsers())
                 .build();
     }
 
+    @GetMapping("/profile/my-info")
+    ApiResponse<UserResponse> getMyInfo(){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getMyInfo())
+                .build();
+    }
+
     @GetMapping("/profile/{userId}")
-    UserResponse getUser(@PathVariable("userId") String userId){
-        return userService.getUser(userId);
+    ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUser(userId))
+                .build();
     }
 
     @PutMapping("/profile/{userId}")
