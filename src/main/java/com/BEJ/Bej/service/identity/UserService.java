@@ -9,7 +9,6 @@ import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.UserMapper;
 import com.BEJ.Bej.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +25,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Transactional
 public class UserService {
 
     UserRepository userRepository;
