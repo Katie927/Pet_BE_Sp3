@@ -1,10 +1,10 @@
-package com.BEJ.Bej.controller;
+package com.BEJ.Bej.controller.identity;
 
 import com.BEJ.Bej.dto.request.ApiResponse;
-import com.BEJ.Bej.dto.request.UserRequest.UserCreationRequest;
-import com.BEJ.Bej.dto.request.UserRequest.UserUpdateRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
-import com.BEJ.Bej.service.UserService;
+import com.BEJ.Bej.service.identity.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +50,11 @@ public class UserController {
                 .build();
     }
 
+//    @PutMapping
+//    ApiResponse<UserResponse> updateMyInfo(){
+//
+//    }
+
     @GetMapping("/profile/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         return ApiResponse.<UserResponse>builder()
@@ -58,8 +63,10 @@ public class UserController {
     }
 
     @PutMapping("/profile/{userId}")
-    UserResponse updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
 //        System.out.println("Request Data: " + request);
-        return userService.updateUser(userId, request);
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(userId, request))
+                .build();
     }
 }

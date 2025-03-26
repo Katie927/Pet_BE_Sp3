@@ -1,5 +1,6 @@
 package com.BEJ.Bej.dto.response;
 
+import com.BEJ.Bej.entity.identity.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,10 +15,9 @@ import java.util.Set;
 public class UserResponse {
     String id;
     String fullName;
-//    String password;
     String address;
     LocalDate dob;
     String email;
     String phoneNumber;
-    Set<String> roles;
+    Set<Role> roles;
 }

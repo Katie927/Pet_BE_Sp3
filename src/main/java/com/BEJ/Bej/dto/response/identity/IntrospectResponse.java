@@ -1,4 +1,4 @@
-package com.BEJ.Bej.dto.response;
+package com.BEJ.Bej.dto.response.identity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,11 +1,11 @@
-package com.BEJ.Bej.controller;
+package com.BEJ.Bej.controller.identity;
 
 import com.BEJ.Bej.dto.request.ApiResponse;
-import com.BEJ.Bej.dto.request.AuthenticationRequest;
-import com.BEJ.Bej.dto.request.IntrospectRequest;
-import com.BEJ.Bej.dto.response.AuthenticationResponse;
-import com.BEJ.Bej.dto.response.IntrospectResponse;
-import com.BEJ.Bej.service.AuthenticationService;
+import com.BEJ.Bej.dto.request.identityRequest.AuthenticationRequest;
+import com.BEJ.Bej.dto.request.identityRequest.IntrospectRequest;
+import com.BEJ.Bej.dto.response.identity.AuthenticationResponse;
+import com.BEJ.Bej.dto.response.identity.IntrospectResponse;
+import com.BEJ.Bej.service.identity.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

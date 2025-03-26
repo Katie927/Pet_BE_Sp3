@@ -1,9 +1,9 @@
-package com.BEJ.Bej.service;
+package com.BEJ.Bej.service.identity;
 
-import com.BEJ.Bej.dto.request.UserRequest.UserCreationRequest;
-import com.BEJ.Bej.dto.request.UserRequest.UserUpdateRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
-import com.BEJ.Bej.entity.User;
+import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.enums.Role;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
@@ -44,7 +44,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         HashSet<String> roles = new HashSet<>();
         roles.add(Role.USER.name());
-        user.setRoles(roles);
+//        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -64,16 +64,19 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
 
-//        System.out.println("Before update: " + user);
-//        System.out.println("User update request: " + request);
         userMapper.updateUser(user, request);
-//        System.out.println("After update: " + user);
-
         User savedUser = userRepository.save(user);
-//        System.out.println("Saved User: " + savedUser);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
+
+//    public UserResponse updateMyInfo(UserUpdateRequest request){
+//        var context = SecurityContextHolder.getContext();
+//        String name = context.getAuthentication().getName();
+//        User user = userRepository.findByEmail(name).orElseThrow(
+//                () -> new AppException(ErrorCode.USER_NOT_EXISTED));;
+//        userMapper.updateUser();
+//    }
 
     public UserResponse getMyInfo(){
         var context = SecurityContextHolder.getContext();

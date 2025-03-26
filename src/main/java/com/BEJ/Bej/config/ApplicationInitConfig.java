@@ -1,13 +1,12 @@
 package com.BEJ.Bej.config;
 
-import com.BEJ.Bej.entity.User;
+import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.enums.Role;
 import com.BEJ.Bej.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +32,7 @@ public class ApplicationInitConfig {
                 User user = User.builder()
                         .email("admin")
                         .password(passwordEncoder.encode("admin"))
-                        .roles(roles)
+//                        .roles(roles)
                         .build();
 
                 userRepository.save(user);

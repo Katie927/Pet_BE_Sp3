@@ -1,9 +1,9 @@
 package com.BEJ.Bej.mapper;
 
-import com.BEJ.Bej.dto.request.UserRequest.UserCreationRequest;
-import com.BEJ.Bej.dto.request.UserRequest.UserUpdateRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
+import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
-import com.BEJ.Bej.entity.User;
+import com.BEJ.Bej.entity.identity.User;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

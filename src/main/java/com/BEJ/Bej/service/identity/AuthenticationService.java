@@ -1,11 +1,10 @@
-package com.BEJ.Bej.service;
+package com.BEJ.Bej.service.identity;
 
-import ch.qos.logback.core.spi.ErrorCodes;
-import com.BEJ.Bej.dto.request.AuthenticationRequest;
-import com.BEJ.Bej.dto.request.IntrospectRequest;
-import com.BEJ.Bej.dto.response.AuthenticationResponse;
-import com.BEJ.Bej.dto.response.IntrospectResponse;
-import com.BEJ.Bej.entity.User;
+import com.BEJ.Bej.dto.request.identityRequest.AuthenticationRequest;
+import com.BEJ.Bej.dto.request.identityRequest.IntrospectRequest;
+import com.BEJ.Bej.dto.response.identity.AuthenticationResponse;
+import com.BEJ.Bej.dto.response.identity.IntrospectResponse;
+import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.repository.UserRepository;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -104,9 +102,9 @@ public class AuthenticationService {
 
     private String buildScope(User user){
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if(!CollectionUtils.isEmpty(user.getRoles())){
-            user.getRoles().forEach(stringJoiner::add);
-        }
+//        if(!CollectionUtils.isEmpty(user.getRoles())){
+//            user.getRoles().forEach(stringJoiner::add);
+//        }
 
         return stringJoiner.toString();
     }
