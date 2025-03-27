@@ -8,6 +8,7 @@ import com.BEJ.Bej.enums.Role;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.UserMapper;
+import com.BEJ.Bej.repository.RoleRepository;
 import com.BEJ.Bej.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class UserService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    RoleRepository roleRepository;
 
 // create User
     public UserResponse createUser(UserCreationRequest request){
@@ -47,6 +49,7 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 // get all users
+//    @PreAuthorize("hasAuthority('permissions')")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers(){
         log.info("in method GET /users");
@@ -61,9 +64,11 @@ public class UserService {
     public UserResponse updateUser(String userId, UserUpdateRequest request){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
-
         userMapper.updateUser(user, request);
-        User savedUser = userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        var roles = roleRepository.findAllById(request.getRoles());
+        user.setRoles(new HashSet<>(roles));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }

@@ -11,10 +11,7 @@ public interface UserMapper {
     User toUser(UserCreationRequest request);
     UserResponse toUserResponse(User user);
 
-//    @Mapping(target = "fullName", ignore = false)
-//    @Mapping(target = "address", ignore = false)
-//    @Mapping(target = "dob", ignore = false)
-//    @Mapping(target = "phoneNumber", ignore = false)
+    @Mapping(target = "roles", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
 }

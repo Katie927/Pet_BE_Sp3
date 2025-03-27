@@ -1,6 +1,6 @@
 package com.BEJ.Bej.dto.response;
 
-import com.BEJ.Bej.entity.identity.Role;
+import com.BEJ.Bej.dto.response.identity.RoleResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,5 +19,5 @@ public class UserResponse {
     LocalDate dob;
     String email;
     String phoneNumber;
-    Set<Role> roles;
+    Set<RoleResponse> roles;
 }
