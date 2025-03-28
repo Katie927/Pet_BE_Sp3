@@ -3,10 +3,11 @@ package com.BEJ.Bej.service.identity;
 import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
 import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
+import com.BEJ.Bej.entity.identity.Role;
 import com.BEJ.Bej.entity.identity.User;
-import com.BEJ.Bej.enums.Role;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
+import com.BEJ.Bej.mapper.RoleMapper;
 import com.BEJ.Bej.mapper.UserMapper;
 import com.BEJ.Bej.repository.RoleRepository;
 import com.BEJ.Bej.repository.UserRepository;
@@ -19,9 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -33,6 +32,7 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    RoleMapper roleMapper;
 
 // create User
     public UserResponse createUser(UserCreationRequest request){
@@ -41,10 +41,13 @@ public class UserService {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
-        User user = userMapper.toUser(request);         //su dung mapstruct
+        User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        var roles = roleRepository.findAllById(Collections.singleton(request.getRole()));
-        user.setRoles(new HashSet<>(roles));
+        System.out.println("request role: " + request.getRole());
+        var role = roleRepository.findById(request.getRole());
+        System.out.println("role: " + role);
+        HashSet<Object> roles = new HashSet<>();
+//        user.setRoles(roles.add(role));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -61,6 +64,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User Not Found!")));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(String userId, UserUpdateRequest request){
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
@@ -73,13 +77,18 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-//    public UserResponse updateMyInfo(UserUpdateRequest request){
-//        var context = SecurityContextHolder.getContext();
-//        String name = context.getAuthentication().getName();
-//        User user = userRepository.findByEmail(name).orElseThrow(
-//                () -> new AppException(ErrorCode.USER_NOT_EXISTED));;
-//        userMapper.updateUser();
-//    }
+    public UserResponse updateMyInfo(UserUpdateRequest request){
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        User user = userRepository.findByEmail(name).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED));;
+        userMapper.updateUser(user, request);
+        if(request.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
 
     public UserResponse getMyInfo(){
         var context = SecurityContextHolder.getContext();

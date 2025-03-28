@@ -3,9 +3,6 @@ package com.BEJ.Bej.dto.request.identityRequest;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

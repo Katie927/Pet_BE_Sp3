@@ -4,6 +4,7 @@ import com.BEJ.Bej.dto.request.ApiResponse;
 import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
 import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
+import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.service.identity.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -43,13 +44,6 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/profile/my-info")
-    ApiResponse<UserResponse> getMyInfo(){
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.getMyInfo())
-                .build();
-    }
-
     @GetMapping("/profile/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         return ApiResponse.<UserResponse>builder()
@@ -62,6 +56,20 @@ public class UserController {
 //        System.out.println("Request Data: " + request);
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(userId, request))
+                .build();
+    }
+
+    @GetMapping("/profile/my-info")
+    ApiResponse<UserResponse> getMyInfo(){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getMyInfo())
+                .build();
+    }
+
+    @PutMapping("/profile/my-info/update")
+    ApiResponse<UserResponse> updateMyInfo(@RequestBody UserUpdateRequest request){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateMyInfo(request))
                 .build();
     }
 }
