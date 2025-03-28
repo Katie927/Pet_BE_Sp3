@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -11,12 +12,7 @@ import java.time.LocalDate;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
-
-    String fullName;
-    String password;
-    String address;
-    LocalDate dob;
     String email;
-    String phoneNumber;
-
+    String password;
+    String role = "USER";
 }

@@ -24,7 +24,7 @@ public class UserController {
 
     UserService userService;
 
-    @PostMapping
+    @PostMapping("/create")
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.createUser(request));
@@ -49,11 +49,6 @@ public class UserController {
                 .result(userService.getMyInfo())
                 .build();
     }
-
-//    @PutMapping
-//    ApiResponse<UserResponse> updateMyInfo(){
-//
-//    }
 
     @GetMapping("/profile/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){

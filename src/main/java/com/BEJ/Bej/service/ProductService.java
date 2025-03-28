@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -47,6 +48,7 @@ public class ProductService {
 //        }
 //    }
 
+//    @PreAuthorize((has))
     public List<ProductResponse> getProducts(){
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
     }
