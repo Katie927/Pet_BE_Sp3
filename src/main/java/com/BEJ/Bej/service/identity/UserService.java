@@ -44,10 +44,12 @@ public class UserService {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         System.out.println("request role: " + request.getRole());
-        var role = roleRepository.findById(request.getRole());
+        var role = roleRepository.findById(request.getRole())
+                .orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_FOUND));;
         System.out.println("role: " + role);
-        HashSet<Object> roles = new HashSet<>();
-//        user.setRoles(roles.add(role));
+        HashSet<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -78,6 +80,7 @@ public class UserService {
     }
 
     public UserResponse updateMyInfo(UserUpdateRequest request){
+        System.out.println("Update my info");
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         User user = userRepository.findByEmail(name).orElseThrow(
