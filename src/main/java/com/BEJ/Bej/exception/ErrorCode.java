@@ -13,7 +13,7 @@ public enum ErrorCode {
     USERNAME_INVALID(1003, "Username must be at least 6 characters", HttpStatus.BAD_REQUEST),
     INVALID_PASSWORD(1006, "Password must be at least 8 characters", HttpStatus.BAD_REQUEST),
     USERNAME_UNAUTHENTICATED(1007, "User unauthenticated", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(1007, "User unauthenticated", HttpStatus.FORBIDDEN),
+    UNAUTHORIZED(1007, "User not have permission", HttpStatus.FORBIDDEN),
 
     ROLE_NOT_FOUND(1011, "Role not found", HttpStatus.BAD_REQUEST);
 
