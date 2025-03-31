@@ -1,5 +1,6 @@
 package com.BEJ.Bej.dto.response;
 
+import com.BEJ.Bej.entity.product.ProductAttribute;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

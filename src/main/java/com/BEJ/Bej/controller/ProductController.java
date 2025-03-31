@@ -3,7 +3,6 @@ package com.BEJ.Bej.controller;
 
 import com.BEJ.Bej.dto.request.ApiResponse;
 import com.BEJ.Bej.dto.response.ProductResponse;
-import com.BEJ.Bej.entity.Product;
 import com.BEJ.Bej.service.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.BEJ.Bej.entity;
+package com.BEJ.Bej.entity.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Brand {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
