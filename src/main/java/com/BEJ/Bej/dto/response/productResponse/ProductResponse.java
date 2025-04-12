@@ -1,13 +1,9 @@
-package com.BEJ.Bej.dto.response;
+package com.BEJ.Bej.dto.response.productResponse;
 
-import com.BEJ.Bej.entity.product.ProductAttribute;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.JoinColumn;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -16,10 +12,13 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
+    String id;
     String name;
     String image;
     int originalPrice;
     int discount;
     int finalPrice;
-    private List<String> specs;
+    List<ProductAttributeResponse> attributes;
+    int status;
+    LocalDate createDate;
 }
