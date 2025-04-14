@@ -15,7 +15,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +30,10 @@ public class ProductService {
 
 //    @PreAuthorize((has))
     public List<ProductResponse> getProducts(){
+        return productRepository.findByStatusOrderByCreateDateDesc(1).stream().map(productMapper::toProductResponse).toList();
+    }
+    // admin get
+    public List<ProductResponse> getAllProducts(){
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
     }
 
@@ -38,8 +44,11 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setCreateDate(LocalDate.now());
+        System.out.println(product.getName());
 
-        List<ProductAttribute> attributes = request.getAttributes().stream()
+        List<ProductAttribute> attributes = Optional.ofNullable(request.getAttributes())
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(attr -> {
                     ProductAttribute attribute = new ProductAttribute();
                     attribute.setValue(attr);
@@ -48,6 +57,7 @@ public class ProductService {
                 })
                 .toList();
         product.setAttributes(attributes);
+        System.out.println(product.getAttributes());
 
         return productMapper.toProductResponse(productRepository.save(product));
     }

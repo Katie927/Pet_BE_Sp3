@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductManageController {
 
     ProductService productService;
+
+    @GetMapping("/list")
+    ApiResponse<List<ProductResponse>> getAllProducts() {
+//        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.getAllProducts())
+                .build();
+    }
 
     @PostMapping("/add")
     ApiResponse<ProductResponse> addNewProduct(@RequestBody @Valid ProductRequest request){
