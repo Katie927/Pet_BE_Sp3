@@ -42,8 +42,8 @@ public class ProductService {
         List<ProductAttribute> attributes = request.getAttributes().stream()
                 .map(attr -> {
                     ProductAttribute attribute = new ProductAttribute();
-                    attribute.setName(attr);
-                    attribute.setProduct(product);  // set FK nếu cần
+                    attribute.setValue(attr);
+                    attribute.setProduct(product);
                     return attribute;
                 })
                 .toList();

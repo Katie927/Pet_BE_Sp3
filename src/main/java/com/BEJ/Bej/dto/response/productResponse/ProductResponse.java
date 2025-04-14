@@ -18,7 +18,7 @@ public class ProductResponse {
     int originalPrice;
     int discount;
     int finalPrice;
-    List<ProductAttributeResponse> attributes;
+    List<String> attributes;
     int status;
     LocalDate createDate;
 }
