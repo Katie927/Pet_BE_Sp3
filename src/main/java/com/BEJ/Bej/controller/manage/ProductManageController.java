@@ -41,4 +41,10 @@ public class ProductManageController {
         productService.delete(productId);
         return ApiResponse.<Void>builder().build();
     }
+
+    @PutMapping("/inactive/{productId}")
+    ApiResponse<Void> inactiveProduct(@PathVariable String productId){
+        productService.inactive(productId);
+        return ApiResponse.<Void>builder().build();
+    }
 }

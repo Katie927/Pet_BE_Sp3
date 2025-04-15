@@ -8,6 +8,7 @@ import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.ProductMapper;
 import com.BEJ.Bej.repository.ProductRepository;
+import com.BEJ.Bej.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,9 @@ public class ProductService {
 
     ProductRepository productRepository;
     ProductMapper productMapper;
+    private final UserRepository userRepository;
 
-//    @PreAuthorize((has))
+    //    @PreAuthorize((has))
     public List<ProductResponse> getProducts(){
         return productRepository.findByStatusOrderByCreateDateDesc(1).stream().map(productMapper::toProductResponse).toList();
     }
@@ -71,5 +73,12 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
     //set status
+    public void inactive(String productId){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        product.setStatus(0);
+
+        productRepository.save(product);
+    }
 
 }

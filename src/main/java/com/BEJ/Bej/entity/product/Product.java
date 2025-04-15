@@ -37,7 +37,7 @@ public class Product {
 //    @JoinColumn(name = "brand_id", nullable = false)
 //    Brand brand;
 
-    int status;
+    int status = 1;
     int stockQuantity;
     int soldQuantity;
 
