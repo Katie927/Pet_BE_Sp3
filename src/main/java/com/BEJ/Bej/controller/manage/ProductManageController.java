@@ -35,4 +35,10 @@ public class ProductManageController {
 
         return apiResponse;
     }
+
+    @DeleteMapping("/delete/{productId}")
+    ApiResponse<Void> deleteProduct(@PathVariable String productId){
+        productService.delete(productId);
+        return ApiResponse.<Void>builder().build();
+    }
 }

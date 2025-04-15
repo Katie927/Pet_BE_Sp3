@@ -25,10 +25,6 @@ public class Product {
     int discount;
     int finalPrice;
 
-//    @ElementCollection
-//    @CollectionTable(name = "product_specs", joinColumns = @JoinColumn(name = "product_id"))
-//    @Column(name = "spec")
-//    List<String> specs;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAttribute> attributes = new ArrayList<>();

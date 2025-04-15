@@ -32,11 +32,16 @@ public class ProductService {
     public List<ProductResponse> getProducts(){
         return productRepository.findByStatusOrderByCreateDateDesc(1).stream().map(productMapper::toProductResponse).toList();
     }
+
+
+
+
+//    admin service
     // admin get
     public List<ProductResponse> getAllProducts(){
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
     }
-
+    // add new
     public ProductResponse addNewProduct(ProductRequest request){
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -61,5 +66,10 @@ public class ProductService {
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
+    //delete
+    public void delete(String productId){
+        productRepository.deleteById(productId);
+    }
+    //set status
 
 }
