@@ -14,7 +14,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -63,6 +69,8 @@ public class ProductService {
                     return attribute;
                 })
                 .toList();
+
+        String image = saveFile()
         product.setAttributes(attributes);
         System.out.println(product.getAttributes());
 
@@ -76,9 +84,20 @@ public class ProductService {
     public void inactive(String productId){
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        product.setStatus(0);
-
+        int status = product.getStatus();
+        if(status == 1) product.setStatus(0);
+        else product.setStatus(1);
         productRepository.save(product);
     }
 
+
+
+
+//    save file
+    String saveFile(MultipartFile file) throws IOException {
+        String uploadDir = "D:/Spring/newVuePr/pimg";
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        return "/images/" + file.getOriginalFilename();
+    }
 }

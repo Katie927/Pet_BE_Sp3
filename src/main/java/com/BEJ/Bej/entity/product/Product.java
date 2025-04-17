@@ -21,6 +21,9 @@ public class Product {
     String id;
     String name;
     String image;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductImage> detailImages;
+
     int originalPrice;
     int discount;
     int finalPrice;
