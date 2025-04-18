@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -105,10 +107,12 @@ public class ProductService {
 //    }
 
     private String saveFile(MultipartFile file) throws IOException {
-        String uploadDir = "D:/Spring/newVuePr/BEJ/src/main/resources/static/images";
+//        String uploadDir = "D:/Spring/newVuePr/BEJ/src/main/resources/static/images";
+        String uploadDir = "D:/Spring/newVuePr/pimg/";
         String filename = file.getOriginalFilename();
-        Path path = Paths.get(uploadDir + filename);
+        Path path = Paths.get(uploadDir + "/" + filename);
+        log.info("adu " + String.valueOf(path));
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return  "http://localhost:8080/images/" + filename;  // Trả về URL lưu trong DB
+        return  "http://localhost:8080/bej3/images/" + filename;  // Trả về URL lưu trong DB
     }
 }

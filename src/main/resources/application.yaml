@@ -13,7 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
   web:
     cors:
       allowed-origins: "http://localhost:5173"

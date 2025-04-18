@@ -7,6 +7,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")  // URL pattern
-                .addResourceLocations("file:D:/Spring/newVuePr/BEJ/src/main/resources/static/images");  // Local folder
+                .addResourceLocations("file:D:/Spring/newVuePr/pimg/");
     }
 }
+
+//                .addResourceLocations("file:D:/Spring/newVuePr/BEJ/src/main/resources/static/images/");  // Local folder
