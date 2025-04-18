@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     @Mapping(target = "attributes", ignore = true)
+    @Mapping(target = "image", ignore = true)
     Product toProduct(ProductRequest request);
 
     @Mapping(source = "attributes", target = "attributes")

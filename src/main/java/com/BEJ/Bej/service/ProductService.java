@@ -50,7 +50,7 @@ public class ProductService {
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
     }
     // add new
-    public ProductResponse addNewProduct(ProductRequest request){
+    public ProductResponse addNewProduct(ProductRequest request) throws IOException {
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -70,7 +70,10 @@ public class ProductService {
                 })
                 .toList();
 
-        String image = saveFile()
+        if (request.getImage() != null) {
+            String image = saveFile(request.getImage());
+            product.setImage(image);
+        }
         product.setAttributes(attributes);
         System.out.println(product.getAttributes());
 
@@ -94,10 +97,18 @@ public class ProductService {
 
 
 //    save file
-    String saveFile(MultipartFile file) throws IOException {
-        String uploadDir = "D:/Spring/newVuePr/pimg";
-        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+//    String saveFile(MultipartFile file) throws IOException {
+//        String uploadDir = "D:/Spring/newVuePr/pimg/";
+//        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+//        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+//        return uploadDir + file.getOriginalFilename();
+//    }
+
+    private String saveFile(MultipartFile file) throws IOException {
+        String uploadDir = "D:/Spring/newVuePr/BEJ/src/main/resources/static/images";
+        String filename = file.getOriginalFilename();
+        Path path = Paths.get(uploadDir + filename);
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return "/images/" + file.getOriginalFilename();
+        return  "http://localhost:8080/images/" + filename;  // Trả về URL lưu trong DB
     }
 }
