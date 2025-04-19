@@ -4,6 +4,7 @@ import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
 import com.BEJ.Bej.entity.product.ProductAttribute;
+import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.ProductMapper;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -75,6 +77,15 @@ public class ProductService {
         if (request.getImage() != null) {
             String image = saveFile(request.getImage());
             product.setImage(image);
+        }
+        if (request.getDetailImages() != null){
+            List<ProductImage>  images = request.getDetailImages().stream()
+                    .map(file -> {
+                        ProductImage image = new ProductImage();
+                        image.setUrl(saveFile(file));
+                        image.setProduct(product);
+                        return image;
+                    }).toList();
         }
         product.setAttributes(attributes);
         System.out.println(product.getAttributes());

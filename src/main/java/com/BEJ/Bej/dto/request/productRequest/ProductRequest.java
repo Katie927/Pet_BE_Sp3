@@ -21,7 +21,7 @@ public class ProductRequest {
     int stockQuantity;
 
     MultipartFile image;
-//    List<MultipartFile> detailImages;
+    List<MultipartFile> detailImages;
 
     List<String> attributes;
 }
