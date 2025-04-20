@@ -15,6 +15,7 @@ public class ProductResponse {
     String id;
     String name;
     String image;
+    List<String> detailImages;
     int originalPrice;
     int discount;
     int finalPrice;

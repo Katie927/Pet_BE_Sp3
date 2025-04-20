@@ -4,6 +4,7 @@ import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
 import com.BEJ.Bej.entity.product.ProductAttribute;
+import com.BEJ.Bej.entity.product.ProductImage;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,6 +18,7 @@ public interface ProductMapper {
     Product toProduct(ProductRequest request);
 
     @Mapping(source = "attributes", target = "attributes")
+    @Mapping(source = "detailImages", target = "detailImages")
     @Mapping(source = "id", target = "id")
 //    @Mapping(source = "status", target = "status")
     ProductResponse toProductResponse(Product product);
@@ -27,6 +29,12 @@ public interface ProductMapper {
     default List<String> mapSpecs(List<ProductAttribute> attributes) {
         return attributes != null ?
                 attributes.stream().map(ProductAttribute::getValue).collect(Collectors.toList())
+                : null;
+    }
+
+    default  List<String> mapImages(List<ProductImage> images) {
+        return images != null ?
+                images.stream().map(ProductImage::getUrl).collect(Collectors.toList())
                 : null;
     }
 }

@@ -82,10 +82,15 @@ public class ProductService {
             List<ProductImage>  images = request.getDetailImages().stream()
                     .map(file -> {
                         ProductImage image = new ProductImage();
-                        image.setUrl(saveFile(file));
+                        try {
+                            image.setUrl(saveFile(file));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                         image.setProduct(product);
                         return image;
                     }).toList();
+            product.setDetailImages(images);
         }
         product.setAttributes(attributes);
         System.out.println(product.getAttributes());
