@@ -28,6 +28,8 @@ public class Product {
     int discount;
     int finalPrice;
 
+    String color;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAttribute> attributes = new ArrayList<>();

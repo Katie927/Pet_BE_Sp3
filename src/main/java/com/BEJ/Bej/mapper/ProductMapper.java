@@ -21,6 +21,7 @@ public interface ProductMapper {
     @Mapping(source = "detailImages", target = "detailImages")
     @Mapping(source = "id", target = "id")
 //    @Mapping(source = "status", target = "status")
+    @Mapping(source = "color", target = "color")
     ProductResponse toProductResponse(Product product);
 
     List<ProductResponse> toResponseList(List<Product> products);

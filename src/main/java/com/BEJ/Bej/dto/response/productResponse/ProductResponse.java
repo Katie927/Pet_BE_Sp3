@@ -22,4 +22,5 @@ public class ProductResponse {
     List<String> attributes;
     int status;
     LocalDate createDate;
+    String color;
 }

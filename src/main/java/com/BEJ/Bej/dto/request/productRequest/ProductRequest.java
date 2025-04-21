@@ -19,6 +19,7 @@ public class ProductRequest {
     int discount;
     int status;
     int stockQuantity;
+    String color;
 
     MultipartFile image;
     List<MultipartFile> detailImages;
