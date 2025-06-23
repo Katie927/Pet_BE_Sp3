@@ -118,7 +118,7 @@ public class AuthenticationService {
                 .issuer("aduvjp.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(13, ChronoUnit.MINUTES).toEpochMilli()
+                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))

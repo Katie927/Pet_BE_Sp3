@@ -30,7 +30,6 @@ public class Product {
 
     String color;
 
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductAttribute> attributes = new ArrayList<>();
 
@@ -49,3 +48,5 @@ public class Product {
     LocalDate createDate;
 
 }
+
+// fix entity chia mau sac va cac phien ban bo cau hinh
