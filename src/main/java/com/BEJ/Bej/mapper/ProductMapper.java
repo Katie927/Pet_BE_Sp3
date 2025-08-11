@@ -13,15 +13,15 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    @Mapping(target = "attributes", ignore = true)
+//    @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "image", ignore = true)
     Product toProduct(ProductRequest request);
 
-    @Mapping(source = "attributes", target = "attributes")
-    @Mapping(source = "detailImages", target = "detailImages")
-    @Mapping(source = "id", target = "id")
+//    @Mapping(source = "attributes", target = "attributes")
+//    @Mapping(source = "detailImages", target = "detailImages")
 //    @Mapping(source = "status", target = "status")
-    @Mapping(source = "color", target = "color")
+//    @Mapping(source = "color", target = "color")
+    @Mapping(source = "id", target = "id")
     ProductResponse toProductResponse(Product product);
 
     List<ProductResponse> toResponseList(List<Product> products);

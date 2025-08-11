@@ -50,9 +50,9 @@ public class ProductService {
 
 //    admin service
     // admin get
-    public List<ProductResponse> getAllProducts(){
-        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
-    }
+//    public List<ProductResponse> getAllProducts(){
+//        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
+//    }
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
         if(productRepository.existsByName(request.getName())){
@@ -69,7 +69,7 @@ public class ProductService {
                 .map(attr -> {
                     ProductAttribute attribute = new ProductAttribute();
                     attribute.setValue(attr);
-                    attribute.setProduct(product);
+//                    attribute.setProduct(product);
                     return attribute;
                 })
                 .toList();
@@ -87,16 +87,17 @@ public class ProductService {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                        image.setProduct(product);
+//                        image.setProduct(product);
                         return image;
                     }).toList();
-            product.setDetailImages(images);
+//            product.setDetailImages(images);
         }
-        product.setAttributes(attributes);
-        System.out.println(product.getAttributes());
+//        product.setAttributes(attributes);
+//        System.out.println(product.getAttributes());
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
+
     //delete
     public void delete(String productId){
         productRepository.deleteById(productId);

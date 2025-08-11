@@ -3,7 +3,6 @@ package com.BEJ.Bej.dto.response.productResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -11,13 +10,20 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class ProductVariantResponse {
+
     String id;
-    String name;
-    String image;
+    String sku;
 
-    int status;
-    LocalDate createDate;
+    int originalPrice;
+    int finalPrice;
+    int discount;
 
-    List<ProductVariantResponse> variantResponses;
+    int stockQuantity;
+    int soldQuantity;
+
+    List<String> detailImages;
+    List<String> attributes;
+
+
 }

@@ -21,21 +21,21 @@ public class ProductManageController {
 
     ProductService productService;
 
-    @GetMapping("/list")
-    ApiResponse<List<ProductResponse>> getAllProducts() {
-//        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
-        return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getAllProducts())
-                .build();
-    }
-
-    @PostMapping("/add")
-    ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
-        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(productService.addNewProduct(request));
-
-        return apiResponse;
-    }
+//    @GetMapping("/list")
+//    ApiResponse<List<ProductResponse>> getAllProducts() {
+////        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
+//        return ApiResponse.<List<ProductResponse>>builder()
+//                .result(productService.getAllProducts())
+//                .build();
+//    }
+//
+//    @PostMapping("/add")
+//    ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
+//        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
+//        apiResponse.setResult(productService.addNewProduct(request));
+//
+//        return apiResponse;
+//    }
 
     @DeleteMapping("/delete/{productId}")
     ApiResponse<Void> deleteProduct(@PathVariable String productId){

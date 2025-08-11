@@ -16,7 +16,11 @@ public class ProductImage {
     Long id;
     String url;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    Product product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "variant_id")
+    ProductVariant variant;
+
+//    @ManyToOne
+//    @JoinColumn(name = "product_id")
+//    Product product;
 }
