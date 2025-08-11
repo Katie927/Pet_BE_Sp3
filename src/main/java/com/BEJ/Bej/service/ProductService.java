@@ -3,11 +3,12 @@ package com.BEJ.Bej.service;
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
-import com.BEJ.Bej.entity.product.ProductAttribute;
 import com.BEJ.Bej.entity.product.ProductImage;
+import com.BEJ.Bej.entity.product.ProductVariant;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.ProductMapper;
+import com.BEJ.Bej.mapper.ProductVariantMapper;
 import com.BEJ.Bej.repository.ProductRepository;
 import com.BEJ.Bej.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -24,10 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -38,6 +36,8 @@ public class ProductService {
 
     ProductRepository productRepository;
     ProductMapper productMapper;
+    ProductVariantMapper productVariantMapper;
+
     private final UserRepository userRepository;
 
     //    @PreAuthorize((has))
@@ -53,6 +53,7 @@ public class ProductService {
 //    public List<ProductResponse> getAllProducts(){
 //        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
 //    }
+
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
         if(productRepository.existsByName(request.getName())){
@@ -63,40 +64,40 @@ public class ProductService {
         product.setCreateDate(LocalDate.now());
         System.out.println(product.getName());
 
-        List<ProductAttribute> attributes = Optional.ofNullable(request.getAttributes())
-                .orElse(Collections.emptyList())
-                .stream()
-                .map(attr -> {
-                    ProductAttribute attribute = new ProductAttribute();
-                    attribute.setValue(attr);
-//                    attribute.setProduct(product);
-                    return attribute;
-                })
-                .toList();
-
         if (request.getImage() != null) {
             String image = saveFile(request.getImage());
             product.setImage(image);
         }
-        if (request.getDetailImages() != null){
-            List<ProductImage>  images = request.getDetailImages().stream()
-                    .map(file -> {
-                        ProductImage image = new ProductImage();
-                        try {
-                            image.setUrl(saveFile(file));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+        if (request.getVariants() != null){
+            List<ProductVariant> variants = request.getVariants().stream()
+                    .map(productVariantRequest -> {
+                        ProductVariant variant = productVariantMapper.toVariant(productVariantRequest);
+                        variant.setProduct(product);
+                        variant.setOriginalPrice(productVariantRequest.getOriginalPrice());
+                        variant.setFinalPrice(productVariantRequest.getFinalPrice());
+//                        variant.setDiscount(productVariantRequest.getDiscount());
+
+                        if(productVariantRequest.getDetailImages() != null){
+                            List<ProductImage> images = productVariantRequest.getDetailImages().stream()
+                                    .map(file -> {
+                                        ProductImage img = new ProductImage();
+                                        try {
+                                            img.setUrl(saveFile(file));
+                                        } catch (IOException e){
+                                            throw new RuntimeException("Loi luu anh chi tiet!", e);
+                                        }
+                                        img.setVariant(variant);
+                                        return img;
+                                    }).toList();
+                            variant.setDetailImages(images);
                         }
-//                        image.setProduct(product);
-                        return image;
+                        return variant;
                     }).toList();
-//            product.setDetailImages(images);
         }
-//        product.setAttributes(attributes);
-//        System.out.println(product.getAttributes());
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
+// add new ----------------------------------------------------------------------------------------
 
     //delete
     public void delete(String productId){

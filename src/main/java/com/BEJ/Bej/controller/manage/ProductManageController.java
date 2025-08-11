@@ -29,13 +29,13 @@ public class ProductManageController {
 //                .build();
 //    }
 //
-//    @PostMapping("/add")
-//    ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
-//        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
-//        apiResponse.setResult(productService.addNewProduct(request));
-//
-//        return apiResponse;
-//    }
+    @PostMapping("/add")
+    ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
+        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(productService.addNewProduct(request));
+
+        return apiResponse;
+    }
 
     @DeleteMapping("/delete/{productId}")
     ApiResponse<Void> deleteProduct(@PathVariable String productId){

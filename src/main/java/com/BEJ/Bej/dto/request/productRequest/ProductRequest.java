@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,14 +14,13 @@ import java.util.List;
 public class ProductRequest {
 
     String name;
-    int originalPrice;
-    int discount;
-    int status;
-    int stockQuantity;
-    String color;
+    String description;
 
     MultipartFile image;
-    List<MultipartFile> detailImages;
 
-    List<String> attributes;
+    int status;
+
+    List<ProductVariantRequest> variants;
+
+//    List<String> attributes;
 }

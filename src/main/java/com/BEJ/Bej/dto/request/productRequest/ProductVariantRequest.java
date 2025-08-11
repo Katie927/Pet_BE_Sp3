@@ -1,7 +1,8 @@
-package com.BEJ.Bej.dto.response.productResponse;
+package com.BEJ.Bej.dto.request.productRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -10,19 +11,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductVariantResponse {
+public class ProductVariantRequest {
 
-    String id;
-    String sku;
+    String color;
 
     int originalPrice;
     int finalPrice;
     int discount;
 
-    int stockQuantity;
-    int soldQuantity;
+    int stockQty;
+    int soldQty = 1;
 
-    List<String> detailImages;
-//    List<String> attributes;
+    List<MultipartFile> detailImages;
 
 }

@@ -18,6 +18,7 @@ public class ProductVariant {
     String id;
 
     String sku; // ma san pham
+    String color;
 //    String image;
     int originalPrice;
     int finalPrice;
