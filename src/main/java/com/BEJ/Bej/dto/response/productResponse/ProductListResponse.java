@@ -4,14 +4,14 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductResponse {
+public class ProductListResponse {
+
     String id;
     String name;
     String image;
@@ -19,5 +19,5 @@ public class ProductResponse {
     int status;
     LocalDate createDate;
 
-    List<ProductVariantResponse> variants;
+    VariantSummaryResponse variant;
 }

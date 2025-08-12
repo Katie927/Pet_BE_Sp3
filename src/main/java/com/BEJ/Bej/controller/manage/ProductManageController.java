@@ -2,6 +2,7 @@ package com.BEJ.Bej.controller.manage;
 
 import com.BEJ.Bej.dto.request.ApiResponse;
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
+import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.service.ProductService;
 import jakarta.validation.Valid;
@@ -21,13 +22,13 @@ public class ProductManageController {
 
     ProductService productService;
 
-//    @GetMapping("/list")
-//    ApiResponse<List<ProductResponse>> getAllProducts() {
-////        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
-//        return ApiResponse.<List<ProductResponse>>builder()
-//                .result(productService.getAllProducts())
-//                .build();
-//    }
+    @GetMapping("/list")
+    ApiResponse<List<ProductListResponse>> getAllProducts() {
+//        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
+        return ApiResponse.<List<ProductListResponse>>builder()
+                .result(productService.getAllProducts())
+                .build();
+    }
 //
     @PostMapping("/add")
     ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {

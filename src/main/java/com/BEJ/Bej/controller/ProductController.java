@@ -2,6 +2,7 @@ package com.BEJ.Bej.controller;
 
 
 import com.BEJ.Bej.dto.request.ApiResponse;
+import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.service.ProductService;
 import lombok.AccessLevel;
@@ -21,13 +22,13 @@ public class ProductController {
 
     ProductService productService;
 
-    @GetMapping
-    ApiResponse<List<ProductResponse>> getProducts() {
-//        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
-        return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getProducts())
-                .build();
-    }
+//    @GetMapping
+//    ApiResponse<List<ProductListResponse>> getProducts() {
+////        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
+//        return ApiResponse.<List<ProductResponse>>builder()
+//                .result(productService.getProducts())
+//                .build();
+//    }
 
 //    @PostMapping()
 }

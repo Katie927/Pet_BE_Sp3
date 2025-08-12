@@ -1,6 +1,7 @@
 package com.BEJ.Bej.service;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
+import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
 import com.BEJ.Bej.entity.product.ProductImage;
@@ -41,18 +42,16 @@ public class ProductService {
     private final UserRepository userRepository;
 
     //    @PreAuthorize((has))
-    public List<ProductResponse> getProducts(){
-        return productRepository.findByStatusOrderByCreateDateDesc(1).stream().map(productMapper::toProductResponse).toList();
+    public List<ProductListResponse> getProducts(){
+        return productRepository.findByStatusOrderByCreateDateDesc(1).stream().map(productMapper::toProductListResponse).toList();
     }
-
-
 
 
 //    admin service
     // admin get
-//    public List<ProductResponse> getAllProducts(){
-//        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductResponse).toList();
-//    }
+    public List<ProductListResponse> getAllProducts(){
+        return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductListResponse).toList();
+    }
 
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
@@ -73,6 +72,10 @@ public class ProductService {
                     .map(productVariantRequest -> {
                         ProductVariant variant = productVariantMapper.toVariant(productVariantRequest);
                         variant.setProduct(product);
+
+                        variant.setColor(productVariantRequest.getColor());
+                        System.out.println(productVariantRequest.getColor());
+                        System.out.println(variant.getColor());
                         variant.setOriginalPrice(productVariantRequest.getOriginalPrice());
                         variant.setFinalPrice(productVariantRequest.getFinalPrice());
 //                        variant.setDiscount(productVariantRequest.getDiscount());
@@ -93,6 +96,7 @@ public class ProductService {
                         }
                         return variant;
                     }).toList();
+            product.setVariants(variants);
         }
 
         return productMapper.toProductResponse(productRepository.save(product));

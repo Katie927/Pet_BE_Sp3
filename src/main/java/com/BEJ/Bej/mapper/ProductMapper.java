@@ -1,17 +1,20 @@
 package com.BEJ.Bej.mapper;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
+import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
+import com.BEJ.Bej.dto.response.productResponse.VariantSummaryResponse;
 import com.BEJ.Bej.entity.product.Product;
 import com.BEJ.Bej.entity.product.ProductAttribute;
 import com.BEJ.Bej.entity.product.ProductImage;
+import com.BEJ.Bej.entity.product.ProductVariant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", uses = {ProductVariantMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductVariantMapper.class, VariantSummaryResponse.class})
 public interface ProductMapper {
 //    @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "image", ignore = true)
@@ -20,8 +23,22 @@ public interface ProductMapper {
 //    @Mapping(source = "status", target = "status")
     @Mapping(source = "id", target = "id")
     ProductResponse toProductResponse(Product product);
-
     List<ProductResponse> toResponseList(List<Product> products);
+
+
+    @Mapping(target = "variant", expression = "java(firstVariantSummary(product.getVariants()))")
+    ProductListResponse toProductListResponse(Product product);
+    List<ProductListResponse> toListProduct(List<Product> products);
+
+    default VariantSummaryResponse firstVariantSummary(List<ProductVariant> variants){
+        ProductVariant v = variants.get(0);
+        VariantSummaryResponse summary = new VariantSummaryResponse();
+        summary.setThumbnail(v.getDetailImages().get(0).getUrl());
+        summary.setOriginalPrice(v.getOriginalPrice());
+        summary.setFinalPrice(v.getFinalPrice());
+
+        return summary;
+    }
 
     // Chuyển danh sách ProductAttribute thành danh sách String (chỉ lấy giá trị)
 //    default List<String> mapSpecs(List<ProductAttribute> attributes) {
