@@ -29,6 +29,12 @@ public class ProductManageController {
                 .result(productService.getAllProducts())
                 .build();
     }
+    @GetMapping("/{productId}")
+    ApiResponse<ProductResponse> getProductDetails(@PathVariable String productId){
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.getProductDetails(productId))
+                .build();
+    }
 //
     @PostMapping("/add")
     ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {

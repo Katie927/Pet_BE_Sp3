@@ -31,9 +31,9 @@ public interface ProductMapper {
     List<ProductListResponse> toListProduct(List<Product> products);
 
     default VariantSummaryResponse firstVariantSummary(List<ProductVariant> variants){
-        ProductVariant v = variants.get(0);
+        ProductVariant v = variants.getFirst();
         VariantSummaryResponse summary = new VariantSummaryResponse();
-        summary.setThumbnail(v.getDetailImages().get(0).getUrl());
+        summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
         summary.setOriginalPrice(v.getOriginalPrice());
         summary.setFinalPrice(v.getFinalPrice());
 

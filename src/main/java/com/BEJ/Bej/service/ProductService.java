@@ -52,6 +52,12 @@ public class ProductService {
     public List<ProductListResponse> getAllProducts(){
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductListResponse).toList();
     }
+    // get 1
+    public ProductResponse getProductDetails(String productId){
+//        System.out.println(productId);
+        return productMapper.toProductResponse(productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found!")));
+    }
 
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
