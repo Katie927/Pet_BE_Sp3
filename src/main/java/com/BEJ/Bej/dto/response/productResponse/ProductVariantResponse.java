@@ -23,6 +23,6 @@ public class ProductVariantResponse {
     int soldQuantity;
 
     List<String> detailImages;
-//    List<String> attributes;
+    List<String> attributes;
 
 }

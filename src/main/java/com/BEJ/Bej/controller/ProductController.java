@@ -22,13 +22,13 @@ public class ProductController {
 
     ProductService productService;
 
-//    @GetMapping
-//    ApiResponse<List<ProductListResponse>> getProducts() {
-////        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
-//        return ApiResponse.<List<ProductResponse>>builder()
-//                .result(productService.getProducts())
-//                .build();
-//    }
+    @GetMapping
+    ApiResponse<List<ProductListResponse>> getProducts() {
+//        ApiResponse<List<Product>> apiResponse = new ApiResponse<>();
+        return ApiResponse.<List<ProductListResponse>>builder()
+                .result(productService.getProducts())
+                .build();
+    }
 
 //    @PostMapping()
 }

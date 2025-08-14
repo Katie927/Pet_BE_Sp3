@@ -21,11 +21,12 @@ public class ProductAttribute {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id", nullable = false)
+            
     ProductVariant variant;
 
-    public ProductAttribute(String name, String value, ProductVariant variant) {
-        this.name = name;
-        this.value = value;
-        this.variant = variant;
-    }
+//    public ProductAttribute(String name, String value, ProductVariant variant) {
+//        this.name = name;
+//        this.value = value;
+//        this.variant = variant;
+//    }
 }

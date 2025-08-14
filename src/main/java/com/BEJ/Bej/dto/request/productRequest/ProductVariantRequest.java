@@ -19,8 +19,8 @@ public class ProductVariantRequest {
     int finalPrice;
     int discount;
 
-    int stockQty;
-    int soldQty = 1;
+    int stockQty = 0;
+    int soldQty = 0;
 
     List<MultipartFile> detailImages;
 
