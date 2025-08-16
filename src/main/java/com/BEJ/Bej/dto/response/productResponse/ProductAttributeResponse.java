@@ -9,5 +9,13 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductAttributeResponse {
-    String value;
+    String name;
+//    String value;
+
+    int originalPrice;
+    int finalPrice;
+    int discount;
+
+    int stockQuantity;
+    int soldQuantity;
 }

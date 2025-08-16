@@ -17,7 +17,14 @@ public class ProductAttribute {
     Long id;
 
     String name;
-    String value;
+//    String value;
+
+    int originalPrice;
+    int finalPrice;
+    int discount;
+
+    int stockQuantity;
+    int soldQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variant_id", nullable = false)

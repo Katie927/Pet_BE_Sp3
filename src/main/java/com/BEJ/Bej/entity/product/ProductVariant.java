@@ -20,12 +20,6 @@ public class ProductVariant {
     String sku; // ma san pham
     String color;
 //    String image;
-    int originalPrice;
-    int finalPrice;
-    int discount;
-
-    int stockQuantity;
-    int soldQuantity;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

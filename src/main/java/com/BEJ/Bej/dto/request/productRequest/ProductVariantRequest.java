@@ -24,4 +24,5 @@ public class ProductVariantRequest {
 
     List<MultipartFile> detailImages;
 
+    List<ProductAttributeRequest> attributes;
 }
