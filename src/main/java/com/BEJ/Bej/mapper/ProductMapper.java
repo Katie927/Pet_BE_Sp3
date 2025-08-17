@@ -34,8 +34,8 @@ public interface ProductMapper {
         ProductVariant v = variants.getFirst();
         VariantSummaryResponse summary = new VariantSummaryResponse();
         summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
-//        summary.setOriginalPrice(v.getOriginalPrice());
-//        summary.setFinalPrice(v.getFinalPrice());
+        summary.setOriginalPrice(v.getOriginalPrice());
+        summary.setFinalPrice(v.getFinalPrice());
 
         return summary;
     }

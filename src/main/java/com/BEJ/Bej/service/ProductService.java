@@ -79,9 +79,9 @@ public class ProductService {
                         ProductVariant variant = productVariantMapper.toVariant(productVariantRequest);
                         variant.setProduct(product);
 
-                        variant.setColor(productVariantRequest.getColor());
-                        System.out.println(productVariantRequest.getColor());
-                        System.out.println(variant.getColor());
+//                        variant.setColor(productVariantRequest.getColor());
+//                        System.out.println(productVariantRequest.getColor());
+//                        System.out.println(variant.getColor());
                         variant.setOriginalPrice(productVariantRequest.getOriginalPrice());
                         variant.setFinalPrice(productVariantRequest.getFinalPrice());
 //                        variant.setDiscount(productVariantRequest.getDiscount());

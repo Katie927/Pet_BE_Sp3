@@ -1,4 +1,7 @@
 package com.BEJ.Bej.mapper;
 
-public class ProductAttributeMapper {
+public interface ProductAttributeMapper {
+
+
+
 }

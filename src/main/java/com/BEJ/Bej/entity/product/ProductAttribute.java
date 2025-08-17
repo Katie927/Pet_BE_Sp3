@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Table(name = "product_attribute")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,27 +17,13 @@ import lombok.experimental.FieldDefaults;
 public class ProductAttribute {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
 
     String name;
 //    String value;
 
-    int originalPrice;
-    int finalPrice;
-    int discount;
+    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<AttributeValue> values = new ArrayList<>();
 
-    int stockQuantity;
-    int soldQuantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "variant_id", nullable = false)
-            
-    ProductVariant variant;
-
-//    public ProductAttribute(String name, String value, ProductVariant variant) {
-//        this.name = name;
-//        this.value = value;
-//        this.variant = variant;
-//    }
 }
