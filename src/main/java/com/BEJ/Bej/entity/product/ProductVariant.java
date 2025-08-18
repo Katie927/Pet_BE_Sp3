@@ -33,8 +33,9 @@ public class ProductVariant {
     Product product;
 
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "sort_index")
     List<ProductImage> detailImages;
 
-//    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
-//    List<VariantAttributeValue> attributeValues;
+    @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProductAttribute> attributeValues;
 }

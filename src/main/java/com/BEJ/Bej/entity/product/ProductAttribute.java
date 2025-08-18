@@ -23,7 +23,11 @@ public class ProductAttribute {
     String name;
 //    String value;
 
-    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<AttributeValue> values = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "variant_id")
+    ProductVariant variant;
+
+//    @OneToMany(mappedBy = "variant_id", cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<ProductVariant> values = new ArrayList<>();
 
 }

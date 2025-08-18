@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public interface ProductVariantMapper {
 
     @Mapping(target = "detailImages", ignore = true)
-    @Mapping(target = "attributeValues", ignore = true)
     ProductVariant toVariant(ProductVariantRequest request);
 
 //    @Mapping(source = "id", target = "id")
@@ -31,12 +30,12 @@ public interface ProductVariantMapper {
                 : null;
     }
 
-    default List<ProductAttributeResponse> mapAttributes(List<VariantAttributeValue> values){
-        return values != null ?
-                values.stream().map(v -> new ProductAttributeResponse(
-                        v.getAttributeValue().getAttribute().getName(),
-                        v.getAttributeValue().getValue()
-                ))
-                        .toList() : null;
-    }
+//    default List<ProductAttributeResponse> mapAttributes(List<VariantAttributeValue> values){
+//        return values != null ?
+//                values.stream().map(v -> new ProductAttributeResponse(
+//                        v.getAttributeValue().getAttribute().getName(),
+//                        v.getAttributeValue().getValue()
+//                ))
+//                        .toList() : null;
+//    }
 }

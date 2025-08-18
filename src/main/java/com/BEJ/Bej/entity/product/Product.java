@@ -28,5 +28,6 @@ public class Product {
     int status; // 0: ngung kinh doanh 1: dang ban
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "sort_index")
     List<ProductVariant> variants = new ArrayList<>();
 }
