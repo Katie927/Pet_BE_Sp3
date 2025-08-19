@@ -4,10 +4,12 @@ import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
+import com.BEJ.Bej.entity.product.ProductAttribute;
 import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
+import com.BEJ.Bej.mapper.ProductAttributeMapper;
 import com.BEJ.Bej.mapper.ProductMapper;
 import com.BEJ.Bej.mapper.ProductVariantMapper;
 import com.BEJ.Bej.repository.ProductRepository;
@@ -38,6 +40,7 @@ public class ProductService {
     ProductRepository productRepository;
     ProductMapper productMapper;
     ProductVariantMapper productVariantMapper;
+    ProductAttributeMapper productAttributeMapper;
 
     private final UserRepository userRepository;
 
@@ -79,9 +82,9 @@ public class ProductService {
                         ProductVariant variant = productVariantMapper.toVariant(productVariantRequest);
                         variant.setProduct(product);
 
-//                        variant.setColor(productVariantRequest.getColor());
-//                        System.out.println(productVariantRequest.getColor());
-//                        System.out.println(variant.getColor());
+                        variant.setColor(productVariantRequest.getColor());
+                        System.out.println(productVariantRequest.getColor());
+                        System.out.println(variant.getColor());
                         variant.setOriginalPrice(productVariantRequest.getOriginalPrice());
                         variant.setFinalPrice(productVariantRequest.getFinalPrice());
 //                        variant.setDiscount(productVariantRequest.getDiscount());
@@ -99,6 +102,17 @@ public class ProductService {
                                         return img;
                                     }).toList();
                             variant.setDetailImages(images);
+                        }
+
+                        if(productVariantRequest.getAttributes() != null){
+                            List<ProductAttribute> attributes = productVariantRequest.getAttributes().stream()
+                                    .map(attributeRequest -> {
+                                        ProductAttribute attribute = productAttributeMapper.toProductAttribute(attributeRequest);
+                                        attribute.setVariant(variant);
+                                        attribute.setName(attributeRequest.getName());
+                                        return attribute;
+                                    }).toList();
+                            variant.setAttributes(attributes);
                         }
                         return variant;
                     }).toList();

@@ -18,7 +18,7 @@ public class ProductVariant {
     String id;
 
     String sku; // ma san pham
-//    String color;
+    String color;
 //    String image;
 
     int originalPrice;
@@ -37,5 +37,5 @@ public class ProductVariant {
     List<ProductImage> detailImages;
 
     @OneToMany(mappedBy = "variant", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ProductAttribute> attributeValues;
+    List<ProductAttribute> attributes;
 }

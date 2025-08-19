@@ -23,6 +23,13 @@ public class ProductAttribute {
     String name;
 //    String value;
 
+//    int originalPrice;
+//    int finalPrice;
+//    int discount;
+//
+//    int stockQuantity;
+//    int soldQuantity;
+
     @ManyToOne
     @JoinColumn(name = "variant_id")
     ProductVariant variant;

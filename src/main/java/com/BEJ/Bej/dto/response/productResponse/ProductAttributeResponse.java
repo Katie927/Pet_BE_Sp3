@@ -9,7 +9,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductAttributeResponse {
+
     String name;
-    String value;
+//    String value;
 
 }

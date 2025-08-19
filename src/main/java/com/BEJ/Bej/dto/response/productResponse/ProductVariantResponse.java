@@ -13,8 +13,8 @@ import java.util.List;
 public class ProductVariantResponse {
 
     String id;
-//    String color;
-
+    String color;
+//
     int originalPrice;
     int finalPrice;
     int discount;
