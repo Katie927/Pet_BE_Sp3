@@ -70,7 +70,7 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setCreateDate(LocalDate.now());
-        System.out.println(product.getName());
+        System.out.println(product.getName()); 
 
         if (request.getImage() != null) {
             String image = saveFile(request.getImage());
@@ -123,6 +123,18 @@ public class ProductService {
     }
 // add new ----------------------------------------------------------------------------------------
 
+// update new ----------------------------------------------------------------------------------------
+
+    public ProductResponse updateProduct(String productId, ProductRequest request){
+
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        productMapper.updateProduct(product, request);
+
+        return productMapper.toProductResponse(productRepository.save(product));
+    }
+
+// update new ----------------------------------------------------------------------------------------
     //delete
     public void delete(String productId){
         productRepository.deleteById(productId);

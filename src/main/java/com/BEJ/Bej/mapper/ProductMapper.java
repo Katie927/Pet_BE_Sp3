@@ -10,6 +10,7 @@ import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,8 @@ public interface ProductMapper {
 
         return summary;
     }
+
+    void updateProduct(@MappingTarget Product product, ProductRequest request);
 
     // Chuyển danh sách ProductAttribute thành danh sách String (chỉ lấy giá trị)
 //    default List<String> mapSpecs(List<ProductAttribute> attributes) {

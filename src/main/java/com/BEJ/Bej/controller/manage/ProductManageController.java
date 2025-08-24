@@ -36,6 +36,14 @@ public class ProductManageController {
                 .build();
     }
 //
+    @PutMapping("/update/{productId}")
+    ApiResponse<ProductResponse> updateProduct(@PathVariable String productId, @RequestBody ProductRequest request){
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateProduct(productId, request))
+                .build();
+    }
+
+//
     @PostMapping("/add")
     ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
