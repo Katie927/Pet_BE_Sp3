@@ -41,6 +41,7 @@ public interface ProductMapper {
         return summary;
     }
 
+    @Mapping(target = "image", ignore = true)
     void updateProduct(@MappingTarget Product product, ProductRequest request);
 
     // Chuyển danh sách ProductAttribute thành danh sách String (chỉ lấy giá trị)

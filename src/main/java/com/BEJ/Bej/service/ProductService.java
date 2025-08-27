@@ -1,6 +1,8 @@
 package com.BEJ.Bej.service;
 
+import com.BEJ.Bej.dto.request.productRequest.ProductAttributeRequest;
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
+import com.BEJ.Bej.dto.request.productRequest.ProductVariantRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.Product;
@@ -149,8 +151,51 @@ public class ProductService {
         productRepository.save(product);
     }
 
+//    mapping
+    // variants
+    private List<ProductVariant> mpVariants(List<ProductVariantRequest> variantRequests, Product product){
+        return variantRequests.stream()
+                .map(req -> {
+                    ProductVariant variant = productVariantMapper.toVariant(req);
 
+                    variant.setProduct(product);
+                    variant.setColor(req.getColor());
+                    variant.setOriginalPrice(req.getOriginalPrice());
+                    variant.setFinalPrice(req.getFinalPrice());
 
+                    if(req.getDetailImages() != null){
+                        variant.setDetailImages(mpDetailImages(req.getDetailImages(), variant));
+                    }
+                    if(req.getAttributes() != null){
+                        variant.setAttributes(mpAttributes(req.getAttributes(), variant));
+                    }
+                    return variant;
+                }).toList();
+    }
+    // images
+    private List<ProductImage> mpDetailImages(List<MultipartFile> files, ProductVariant variant){
+        return files.stream()
+                .map(file -> {
+                    ProductImage img = new ProductImage();
+                    try {
+                        img.setUrl(saveFile(file));
+                    } catch (IOException e){
+                        throw new RuntimeException("Loi luu anh chi tiet!", e);
+                    }
+                    img.setVariant(variant);
+                    return img;
+                }).toList();
+    }
+    // attributes
+    private List<ProductAttribute> mpAttributes(List<ProductAttributeRequest> attributesReq, ProductVariant variant){
+        return attributesReq.stream()
+                .map(req -> {
+                    ProductAttribute attribute = productAttributeMapper.toProductAttribute(req);
+                    attribute.setVariant(variant);
+                    attribute.setName(req.getName());
+                    return attribute;
+                }).toList();
+    }
 
 //    save file
 //    String saveFile(MultipartFile file) throws IOException {
