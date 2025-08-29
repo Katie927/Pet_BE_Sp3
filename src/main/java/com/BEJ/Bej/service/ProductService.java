@@ -79,45 +79,7 @@ public class ProductService {
             product.setImage(image);
         }
         if (request.getVariants() != null){
-            List<ProductVariant> variants = request.getVariants().stream()
-                    .map(productVariantRequest -> {
-                        ProductVariant variant = productVariantMapper.toVariant(productVariantRequest);
-                        variant.setProduct(product);
-
-                        variant.setColor(productVariantRequest.getColor());
-                        System.out.println(productVariantRequest.getColor());
-                        System.out.println(variant.getColor());
-                        variant.setOriginalPrice(productVariantRequest.getOriginalPrice());
-                        variant.setFinalPrice(productVariantRequest.getFinalPrice());
-//                        variant.setDiscount(productVariantRequest.getDiscount());
-
-                        if(productVariantRequest.getDetailImages() != null){
-                            List<ProductImage> images = productVariantRequest.getDetailImages().stream()
-                                    .map(file -> {
-                                        ProductImage img = new ProductImage();
-                                        try {
-                                            img.setUrl(saveFile(file));
-                                        } catch (IOException e){
-                                            throw new RuntimeException("Loi luu anh chi tiet!", e);
-                                        }
-                                        img.setVariant(variant);
-                                        return img;
-                                    }).toList();
-                            variant.setDetailImages(images);
-                        }
-
-                        if(productVariantRequest.getAttributes() != null){
-                            List<ProductAttribute> attributes = productVariantRequest.getAttributes().stream()
-                                    .map(attributeRequest -> {
-                                        ProductAttribute attribute = productAttributeMapper.toProductAttribute(attributeRequest);
-                                        attribute.setVariant(variant);
-                                        attribute.setName(attributeRequest.getName());
-                                        return attribute;
-                                    }).toList();
-                            variant.setAttributes(attributes);
-                        }
-                        return variant;
-                    }).toList();
+            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
             product.setVariants(variants);
         }
 
@@ -126,16 +88,27 @@ public class ProductService {
 // add new ----------------------------------------------------------------------------------------
 
 // update new ----------------------------------------------------------------------------------------
-
-    public ProductResponse updateProduct(String productId, ProductRequest request){
+    public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
 
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
         productMapper.updateProduct(product, request);
 
+        System.out.println("update");
+
+        if(request.getImage() != null){
+            System.out.println("main image");
+            String image = saveFile(request.getImage());
+            product.setImage(image);
+        }
+        if(request.getVariants() != null){
+            System.out.println("variants");
+            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
+            product.setVariants(variants);
+        }
+        System.out.println("adu");
         return productMapper.toProductResponse(productRepository.save(product));
     }
-
 // update new ----------------------------------------------------------------------------------------
     //delete
     public void delete(String productId){
@@ -164,6 +137,7 @@ public class ProductService {
                     variant.setFinalPrice(req.getFinalPrice());
 
                     if(req.getDetailImages() != null){
+                        System.out.println("list images!");
                         variant.setDetailImages(mpDetailImages(req.getDetailImages(), variant));
                     }
                     if(req.getAttributes() != null){

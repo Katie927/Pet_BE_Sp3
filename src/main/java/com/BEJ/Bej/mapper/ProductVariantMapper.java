@@ -21,6 +21,7 @@ public interface ProductVariantMapper {
     @Mapping(source = "color", target = "color")
     @Mapping(source = "originalPrice", target = "originalPrice")
     @Mapping(source = "attributes", target = "attributes")
+    @Mapping(target = "detailImages", ignore = true)
     ProductVariantResponse toVariantResponse(ProductVariant variant);
 
     List<ProductVariantResponse> toVariantResponseList(List<ProductVariant> variants);

@@ -28,6 +28,7 @@ public interface ProductMapper {
 
 
     @Mapping(target = "variant", expression = "java(firstVariantSummary(product.getVariants()))")
+    @Mapping(target = "image", ignore = true)
     ProductListResponse toProductListResponse(Product product);
     List<ProductListResponse> toListProduct(List<Product> products);
 
