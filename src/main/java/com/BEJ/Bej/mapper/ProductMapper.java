@@ -28,17 +28,19 @@ public interface ProductMapper {
 
 
     @Mapping(target = "variant", expression = "java(firstVariantSummary(product.getVariants()))")
-    @Mapping(target = "image", ignore = true)
     ProductListResponse toProductListResponse(Product product);
     List<ProductListResponse> toListProduct(List<Product> products);
 
     default VariantSummaryResponse firstVariantSummary(List<ProductVariant> variants){
+        if (variants == null || variants.isEmpty()) {
+            return new VariantSummaryResponse(); // trả về object rỗng
+        }
         ProductVariant v = variants.getFirst();
         VariantSummaryResponse summary = new VariantSummaryResponse();
-        summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
+        if(v != null && v.getDetailImages() != null && !v.getDetailImages().isEmpty())
+            summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
 //        summary.setOriginalPrice(v.getOriginalPrice());
 //        summary.setFinalPrice(v.getFinalPrice());
-
         return summary;
     }
 

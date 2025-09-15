@@ -21,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/auth/log-in", "/auth/introspect", "/users/create", "/auth/logout"
+            "/auth/log-in", "/auth/introspect", "/users/create", "/auth/logout", "/"
     };
 
     @Autowired
@@ -32,9 +32,8 @@ public class SecurityConfig {
         httpSecurity
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                request.requestMatchers(PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/images/**").permitAll()
                         .anyRequest().authenticated()
                         );

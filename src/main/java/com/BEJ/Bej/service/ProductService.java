@@ -21,6 +21,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,6 +55,7 @@ public class ProductService {
 
 //    admin service
     // admin get
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ProductListResponse> getAllProducts(){
         return productRepository.findAllByOrderByCreateDateDesc().stream().map(productMapper::toProductListResponse).toList();
     }
@@ -97,16 +99,13 @@ public class ProductService {
         System.out.println("update");
 
         if(request.getImage() != null){
-            System.out.println("main image");
             String image = saveFile(request.getImage());
             product.setImage(image);
         }
         if(request.getVariants() != null){
-            System.out.println("variants");
             List<ProductVariant> variants = mpVariants(request.getVariants(), product);
             product.setVariants(variants);
         }
-        System.out.println("adu");
         return productMapper.toProductResponse(productRepository.save(product));
     }
 // update new ----------------------------------------------------------------------------------------
