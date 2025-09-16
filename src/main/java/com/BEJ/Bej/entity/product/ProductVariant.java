@@ -21,12 +21,12 @@ public class ProductVariant {
     String color;
 //    String image;
 
-    int originalPrice;
-    int finalPrice;
-    int discount;
-
-    int stockQuantity;
-    int soldQuantity;
+//    int originalPrice;
+//    int finalPrice;
+//    int discount;
+//
+//    int stockQuantity;
+//    int soldQuantity;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

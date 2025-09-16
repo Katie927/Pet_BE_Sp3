@@ -132,8 +132,8 @@ public class ProductService {
 
                     variant.setProduct(product);
                     variant.setColor(req.getColor());
-                    variant.setOriginalPrice(req.getOriginalPrice());
-                    variant.setFinalPrice(req.getFinalPrice());
+//                    variant.setOriginalPrice(req.getOriginalPrice());
+//                    variant.setFinalPrice(req.getFinalPrice());
 
                     if(req.getDetailImages() != null){
                         System.out.println("list images!");

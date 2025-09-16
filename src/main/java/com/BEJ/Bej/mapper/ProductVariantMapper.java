@@ -19,7 +19,7 @@ public interface ProductVariantMapper {
 
 //    @Mapping(source = "id", target = "id")
     @Mapping(source = "color", target = "color")
-    @Mapping(source = "originalPrice", target = "originalPrice")
+//    @Mapping(source = "originalPrice", target = "originalPrice")
     @Mapping(source = "attributes", target = "attributes")
     ProductVariantResponse toVariantResponse(ProductVariant variant);
 
