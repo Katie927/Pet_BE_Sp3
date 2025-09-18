@@ -41,11 +41,12 @@ import java.util.List;
 public class ProductService {
 
     ProductRepository productRepository;
+
     ProductMapper productMapper;
     ProductVariantMapper productVariantMapper;
     ProductAttributeMapper productAttributeMapper;
 
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
 
     //    @PreAuthorize((has))
     public List<ProductListResponse> getProducts(){

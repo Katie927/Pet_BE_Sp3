@@ -34,4 +34,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "sort_index")
     List<ProductVariant> variants = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Category category;
+
 }
