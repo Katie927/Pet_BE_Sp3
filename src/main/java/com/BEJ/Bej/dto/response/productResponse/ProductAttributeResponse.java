@@ -13,4 +13,11 @@ public class ProductAttributeResponse {
     String name;
 //    String value;
 
+    int originalPrice;
+    int finalPrice;
+    int discount;
+
+    int stockQuantity;
+    int soldQuantity;
+
 }

@@ -13,11 +13,11 @@ public class ProductAttributeRequest {
     String name;
 //    String value;
 
-//    int originalPrice;
-//    int finalPrice;
-//    int discount;
-//
-//    int stockQuantity;
-//    int soldQuantity;
+    int originalPrice;
+    int finalPrice;
+    int discount;
+
+    int stockQuantity;
+    int soldQuantity;
 
 }

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public interface ProductMapper {
 //    @Mapping(target = "attributes", ignore = true)
     @Mapping(target = "image", ignore = true)
+    @Mapping(target = "introImages", ignore = true)
     Product toProduct(ProductRequest request);
 
 //    @Mapping(source = "status", target = "status")

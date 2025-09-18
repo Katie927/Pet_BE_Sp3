@@ -25,6 +25,10 @@ public class Product {
     LocalDate createDate;
 
     String image;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "sort_index")
+    List<ProductImage> introImages;
+
     int status; // 0: ngung kinh doanh 1: dang ban
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

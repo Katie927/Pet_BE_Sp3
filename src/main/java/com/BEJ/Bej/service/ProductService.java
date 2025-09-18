@@ -74,11 +74,14 @@ public class ProductService {
 
         Product product = productMapper.toProduct(request);
         product.setCreateDate(LocalDate.now());
-        System.out.println(product.getName()); 
+        System.out.println(product.getName());
 
         if (request.getImage() != null) {
             String image = saveFile(request.getImage());
             product.setImage(image);
+        }
+        if(request.getIntroImages() != null){
+            product.setIntroImages(mpIntroImages(request.getIntroImages(), product));
         }
         if (request.getVariants() != null){
             List<ProductVariant> variants = mpVariants(request.getVariants(), product);
@@ -146,16 +149,28 @@ public class ProductService {
                 }).toList();
     }
     // images
+    private ProductImage mpImage(MultipartFile file){
+        ProductImage img = new ProductImage();
+        try {
+            img.setUrl(saveFile(file));
+        } catch (IOException e) {
+            throw new RuntimeException("Lỗi lưu ảnh!", e);
+        }
+        return img;
+    }
     private List<ProductImage> mpDetailImages(List<MultipartFile> files, ProductVariant variant){
         return files.stream()
                 .map(file -> {
-                    ProductImage img = new ProductImage();
-                    try {
-                        img.setUrl(saveFile(file));
-                    } catch (IOException e){
-                        throw new RuntimeException("Loi luu anh chi tiet!", e);
-                    }
+                    ProductImage img = mpImage(file);
                     img.setVariant(variant);
+                    return img;
+                }).toList();
+    }
+    private List<ProductImage> mpIntroImages(List<MultipartFile> files, Product product){
+        return files.stream()
+                .map(file -> {
+                    ProductImage img = mpImage(file);
+                    img.setProduct(product);
                     return img;
                 }).toList();
     }
@@ -166,6 +181,8 @@ public class ProductService {
                     ProductAttribute attribute = productAttributeMapper.toProductAttribute(req);
                     attribute.setVariant(variant);
                     attribute.setName(req.getName());
+                    attribute.setOriginalPrice(req.getOriginalPrice());
+                    attribute.setFinalPrice(req.getFinalPrice());
                     return attribute;
                 }).toList();
     }

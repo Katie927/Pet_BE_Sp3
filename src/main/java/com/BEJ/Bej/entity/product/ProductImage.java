@@ -20,4 +20,8 @@ public class ProductImage {
     @JoinColumn(name = "variant_id")
     ProductVariant variant;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    Product product;
+
 }

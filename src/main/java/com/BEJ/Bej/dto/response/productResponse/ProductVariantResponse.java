@@ -14,13 +14,6 @@ public class ProductVariantResponse {
 
     String id;
     String color;
-//
-    int originalPrice;
-    int finalPrice;
-    int discount;
-
-    int stockQuantity;
-    int soldQuantity;
 
     List<String> detailImages;
     List<ProductAttributeResponse> attributes;

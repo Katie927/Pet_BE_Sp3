@@ -25,10 +25,10 @@ public class ProductAttribute {
 
     int originalPrice;
     int finalPrice;
-    int discount;
+    int discount = 0;
 
-    int stockQuantity;
-    int soldQuantity;
+    int stockQuantity = 0;
+    int soldQuantity = 0;
 
     int status  = 0;
 
