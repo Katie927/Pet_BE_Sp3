@@ -1,5 +1,6 @@
 package com.BEJ.Bej.mapper;
 
+import com.BEJ.Bej.dto.request.productRequest.CategoryRequest;
 import com.BEJ.Bej.dto.response.productResponse.CategoryResponse;
 import com.BEJ.Bej.dto.response.productResponse.VariantSummaryResponse;
 import com.BEJ.Bej.entity.product.Category;
@@ -11,6 +12,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {ProductVariantMapper.class, VariantSummaryResponse.class})
 
 public interface CategoryMapper {
+
+    Category toCategory(CategoryRequest request);
 
     @Mapping(source = "id", target = "id")
     CategoryResponse toCategoryResponse(Category category);
