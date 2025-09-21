@@ -1,5 +1,5 @@
 # ---------- build stage ----------
-FROM maven:3.9.4-eclipse-temurin-17 AS builder
+FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /workspace
 
 # copy mvnw & .mvn to keep wrapper behaviour and preserve exec bit
@@ -15,7 +15,7 @@ COPY src ./src
 RUN ./mvnw -B clean package -DskipTests
 
 # ---------- runtime stage ----------
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Copy fat jar from builder (một file .jar trong target/)
