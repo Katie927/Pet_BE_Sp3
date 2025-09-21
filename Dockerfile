@@ -1,34 +1,20 @@
 # ---------- build stage ----------
-FROM eclipse-temurin:21-jdk AS builder
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /workspace
-
-# copy mvnw & .mvn to keep wrapper behaviour and preserve exec bit
-COPY mvnw .
-COPY .mvn .mvn
-RUN chmod +x mvnw
-
-# copy pom and sources (copy only what's cần để cache tốt hơn)
-COPY pom.xml .
-COPY src ./src
-
-# build (skip tests in CI/dev; remove -DskipTests for full build)
+COPY . .
 RUN ./mvnw -B clean package -DskipTests
 
 # ---------- runtime stage ----------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jdk-jammy
 WORKDIR /app
 
-# Copy fat jar from builder (một file .jar trong target/)
+# copy file jar từ stage builder
 COPY --from=builder /workspace/target/*.jar app.jar
 
-# non-root user (an toàn hơn)
+# tạo user không root
 RUN addgroup --system spring && adduser --system --ingroup spring spring
 RUN chown spring:spring /app/app.jar
+
 USER spring
 
-# use the PORT env provided by Render if present; fallback 8080
-ENV JAVA_OPTS="-Xms256m -Xmx512m"
-EXPOSE 8080
-
-# ENTRYPOINT uses shell to allow ${PORT} expansion at runtime
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar /app/app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
