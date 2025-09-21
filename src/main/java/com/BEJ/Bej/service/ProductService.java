@@ -203,6 +203,8 @@ public class ProductService {
         Path path = Paths.get(uploadDir + "/" + filename);
         log.info("adu " + String.valueOf(path));
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return  "http://localhost:8080/bej3/images/" + filename;  // Trả về URL lưu trong DB
+//        return  "http://localhost:8080/bej3/images/" + filename;  // Trả về URL lưu trong DB
+
+        return  "https://btn-bej3-api.onrender.com/bej3/images/" + filename;
     }
 }

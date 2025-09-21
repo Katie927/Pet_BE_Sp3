@@ -7,9 +7,9 @@ server:
 
 spring:
   datasource:
-    url: ${RAILWAY_JDBC_URL}
-    username: ${RAILWAY_USERNAME}
-    password: ${RAILWAY_PASSWORD}
+    url: jdbc:mysql://trolley.proxy.rlwy.net:10577/railway?useSSL=false&serverTimezone=UTC
+    username: root
+    password: ApyPKrVxeduoQRGCKszrRQEdygTbvyUG
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
