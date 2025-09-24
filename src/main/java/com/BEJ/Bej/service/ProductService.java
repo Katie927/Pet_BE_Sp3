@@ -69,6 +69,7 @@ public class ProductService {
 
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
+        System.out.println("product add");
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -94,6 +95,7 @@ public class ProductService {
 // add new ----------------------------------------------------------------------------------------
 
 // update new ----------------------------------------------------------------------------------------
+    @Transactional
     public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
 
         Product product = productRepository.findById(productId).orElseThrow(
@@ -106,10 +108,17 @@ public class ProductService {
             String image = saveFile(request.getImage());
             product.setImage(image);
         }
-        if(request.getVariants() != null){
-            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
-            product.setVariants(variants);
+        if(request.getIntroImages() != null){
+            product.getIntroImages().clear();
+            product.getIntroImages().addAll(mpIntroImages(request.getIntroImages(), product));
         }
+        if(request.getVariants() != null){
+//            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
+//            product.setVariants(variants);
+            product.getVariants().clear(); // xóa cũ, nếu orphanRemoval = true
+            product.getVariants().addAll(mpVariants(request.getVariants(), product));
+        }
+        System.out.println("last update");
         return productMapper.toProductResponse(productRepository.save(product));
     }
 // update new ----------------------------------------------------------------------------------------
@@ -136,8 +145,6 @@ public class ProductService {
 
                     variant.setProduct(product);
                     variant.setColor(req.getColor());
-//                    variant.setOriginalPrice(req.getOriginalPrice());
-//                    variant.setFinalPrice(req.getFinalPrice());
 
                     if(req.getDetailImages() != null){
                         System.out.println("list images!");
@@ -201,7 +208,7 @@ public class ProductService {
         String uploadDir = "D:/Spring/newVuePr/pimg/";
         String filename = file.getOriginalFilename();
         Path path = Paths.get(uploadDir + "/" + filename);
-        log.info("adu " + String.valueOf(path));
+//        log.info("adu " + String.valueOf(path));
         Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         return  "http://localhost:8080/bej3/images/" + filename;  // Trả về URL lưu trong DB
 

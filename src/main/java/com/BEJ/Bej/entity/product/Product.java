@@ -33,7 +33,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "sort_index")
-    List<ProductVariant> variants = new ArrayList<>();
+    List<ProductVariant> variants;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

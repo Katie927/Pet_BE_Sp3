@@ -8,9 +8,7 @@ import com.BEJ.Bej.entity.product.Product;
 import com.BEJ.Bej.entity.product.ProductAttribute;
 import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +44,9 @@ public interface ProductMapper {
     }
 
     @Mapping(target = "image", ignore = true)
+    @Mapping(target = "variants", ignore = true)
+    @Mapping(target = "introImages", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateProduct(@MappingTarget Product product, ProductRequest request);
 
     // Chuyển danh sách ProductAttribute thành danh sách String (chỉ lấy giá trị)

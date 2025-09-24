@@ -46,6 +46,8 @@ public class ProductManageController {
 //
     @PostMapping("/add")
     ApiResponse<ProductResponse> addNewProduct(@ModelAttribute @Valid ProductRequest request) throws IOException {
+        System.out.println("product add");
+
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(productService.addNewProduct(request));
 
