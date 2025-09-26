@@ -2,7 +2,6 @@ package com.BEJ.Bej.dto.request.productRequest;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class ProductVariantRequest {
     int stockQty = 0;
     int soldQty = 0;
 
-    List<MultipartFile> detailImages;
+    List<ProductImageRequest> detailImages;
 
     List<ProductAttributeRequest> attributes;
 }

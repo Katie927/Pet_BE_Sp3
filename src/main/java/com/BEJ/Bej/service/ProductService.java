@@ -1,6 +1,7 @@
 package com.BEJ.Bej.service;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductAttributeRequest;
+import com.BEJ.Bej.dto.request.productRequest.ProductImageRequest;
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.request.productRequest.ProductVariantRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
@@ -79,7 +80,7 @@ public class ProductService {
         System.out.println(product.getName());
 
         if (request.getImage() != null) {
-            String image = saveFile(request.getImage());
+            String image = saveFile(request.getImage().getFile());
             product.setImage(image);
         }
         if(request.getIntroImages() != null){
@@ -95,32 +96,32 @@ public class ProductService {
 // add new ----------------------------------------------------------------------------------------
 
 // update new ----------------------------------------------------------------------------------------
-    @Transactional
-    public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
-
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        productMapper.updateProduct(product, request);
-
-        System.out.println("update");
-
-        if(request.getImage() != null){
-            String image = saveFile(request.getImage());
-            product.setImage(image);
-        }
-        if(request.getIntroImages() != null){
-            product.getIntroImages().clear();
-            product.getIntroImages().addAll(mpIntroImages(request.getIntroImages(), product));
-        }
-        if(request.getVariants() != null){
-//            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
-//            product.setVariants(variants);
-            product.getVariants().clear(); // xóa cũ, nếu orphanRemoval = true
-            product.getVariants().addAll(mpVariants(request.getVariants(), product));
-        }
-        System.out.println("last update");
-        return productMapper.toProductResponse(productRepository.save(product));
-    }
+//    @Transactional
+//    public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
+//
+//        Product product = productRepository.findById(productId).orElseThrow(
+//                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+//        productMapper.updateProduct(product, request);
+//
+//        System.out.println("update");
+//
+//        if(request.getImage() != null){
+//            String image = saveFile(request.getImage());
+//            product.setImage(image);
+//        }
+//        if(request.getIntroImages() != null){
+//            product.getIntroImages().clear();
+//            product.getIntroImages().addAll(mpIntroImages(request.getIntroImages(), product));
+//        }
+//        if(request.getVariants() != null){
+////            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
+////            product.setVariants(variants);
+//            product.getVariants().clear(); // xóa cũ, nếu orphanRemoval = true
+//            product.getVariants().addAll(mpVariants(request.getVariants(), product));
+//        }
+//        System.out.println("last update");
+//        return productMapper.toProductResponse(productRepository.save(product));
+//    }
 // update new ----------------------------------------------------------------------------------------
     //delete
     public void delete(String productId){
@@ -138,24 +139,26 @@ public class ProductService {
 
 //    mapping
     // variants
-    private List<ProductVariant> mpVariants(List<ProductVariantRequest> variantRequests, Product product){
-        return variantRequests.stream()
-                .map(req -> {
-                    ProductVariant variant = productVariantMapper.toVariant(req);
+private List<ProductVariant> mpVariants(List<ProductVariantRequest> variantRequests, Product product){
+    return variantRequests.stream()
+            .map(req -> {
+                ProductVariant variant = productVariantMapper.toVariant(req);
 
-                    variant.setProduct(product);
-                    variant.setColor(req.getColor());
+                variant.setProduct(product);
+                variant.setColor(req.getColor());
+//                    variant.setOriginalPrice(req.getOriginalPrice());
+//                    variant.setFinalPrice(req.getFinalPrice());
 
-                    if(req.getDetailImages() != null){
-                        System.out.println("list images!");
-                        variant.setDetailImages(mpDetailImages(req.getDetailImages(), variant));
-                    }
-                    if(req.getAttributes() != null){
-                        variant.setAttributes(mpAttributes(req.getAttributes(), variant));
-                    }
-                    return variant;
-                }).toList();
-    }
+                if(req.getDetailImages() != null){
+                    System.out.println("list images!");
+                    variant.setDetailImages(mpDetailImages(req.getDetailImages(), variant));
+                }
+                if(req.getAttributes() != null){
+                    variant.setAttributes(mpAttributes(req.getAttributes(), variant));
+                }
+                return variant;
+            }).toList();
+}
     // images
     private ProductImage mpImage(MultipartFile file){
         ProductImage img = new ProductImage();
@@ -166,18 +169,18 @@ public class ProductService {
         }
         return img;
     }
-    private List<ProductImage> mpDetailImages(List<MultipartFile> files, ProductVariant variant){
+    private List<ProductImage> mpDetailImages(List<ProductImageRequest> files, ProductVariant variant){
         return files.stream()
                 .map(file -> {
-                    ProductImage img = mpImage(file);
+                    ProductImage img = mpImage(file.getFile());
                     img.setVariant(variant);
                     return img;
                 }).toList();
     }
-    private List<ProductImage> mpIntroImages(List<MultipartFile> files, Product product){
+    private List<ProductImage> mpIntroImages(List<ProductImageRequest> files, Product product){
         return files.stream()
                 .map(file -> {
-                    ProductImage img = mpImage(file);
+                    ProductImage img = mpImage(file.getFile());
                     img.setProduct(product);
                     return img;
                 }).toList();
