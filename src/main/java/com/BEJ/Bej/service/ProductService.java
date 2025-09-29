@@ -32,7 +32,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -80,7 +84,7 @@ public class ProductService {
         System.out.println(product.getName());
 
         if (request.getImage() != null) {
-            String image = saveFile(request.getImage().getFile());
+            String image = saveFile(request.getImage());
             product.setImage(image);
         }
         if(request.getIntroImages() != null){
@@ -90,39 +94,176 @@ public class ProductService {
             List<ProductVariant> variants = mpVariants(request.getVariants(), product);
             product.setVariants(variants);
         }
+        System.out.println("=== PRODUCT UPDATE DEBUG ===");
+        System.out.println("Product ID: " + product.getId());
+        System.out.println("IntroImages: ");
+        product.getIntroImages().forEach(img ->
+                System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
+
+        System.out.println("Variants: ");
+        product.getVariants().forEach(variant -> {
+            System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
+
+            System.out.println("   DetailImages:");
+            variant.getDetailImages().forEach(img ->
+                    System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
+
+            System.out.println("   Attributes:");
+            variant.getAttributes().forEach(attr ->
+                    System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
+        });
+        System.out.println("update");
+
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
 // add new ----------------------------------------------------------------------------------------
 
 // update new ----------------------------------------------------------------------------------------
-//    @Transactional
-//    public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
-//
-//        Product product = productRepository.findById(productId).orElseThrow(
-//                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
-//        productMapper.updateProduct(product, request);
-//
-//        System.out.println("update");
-//
-//        if(request.getImage() != null){
-//            String image = saveFile(request.getImage());
-//            product.setImage(image);
-//        }
-//        if(request.getIntroImages() != null){
-//            product.getIntroImages().clear();
-//            product.getIntroImages().addAll(mpIntroImages(request.getIntroImages(), product));
-//        }
-//        if(request.getVariants() != null){
-////            List<ProductVariant> variants = mpVariants(request.getVariants(), product);
-////            product.setVariants(variants);
-//            product.getVariants().clear(); // xóa cũ, nếu orphanRemoval = true
-//            product.getVariants().addAll(mpVariants(request.getVariants(), product));
-//        }
-//        System.out.println("last update");
-//        return productMapper.toProductResponse(productRepository.save(product));
-//    }
-// update new ----------------------------------------------------------------------------------------
+@Transactional
+public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
+    Product product = productRepository.findById(productId).orElseThrow(
+            () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+    productMapper.updateProduct(product, request);
+
+    // cập nhật ảnh đại diện
+    if (request.getImage() != null) {
+        String image = saveFile(request.getImage());
+        product.setImage(image);
+    }
+
+    // intro images
+    if (request.getIntroImages() != null) {
+        Map<String, ProductImage> oldImages = product.getIntroImages().stream()
+                .filter(img -> img.getId() != null)
+                .collect(Collectors.toMap(ProductImage::getId, Function.identity()));
+
+        List<ProductImage> updatedImages = new ArrayList<>();
+        for (ProductImageRequest reqImg : request.getIntroImages()) {
+            if (reqImg.getId() != null && oldImages.containsKey(reqImg.getId())) {
+                ProductImage img = oldImages.get(reqImg.getId());
+                if (reqImg.getFile() != null) {
+                    img.setUrl(saveFile(reqImg.getFile()));
+                }
+                updatedImages.add(img);
+            } else {
+                ProductImage newImg = mpImage(reqImg.getFile());
+                newImg.setProduct(product);
+                updatedImages.add(newImg);
+            }
+        }
+        // dùng clear + addAll thay cho setIntroImages
+        product.getIntroImages().clear();
+        product.getIntroImages().addAll(updatedImages);
+    }
+
+    // variants
+    if (request.getVariants() != null) {
+        Map<String, ProductVariant> oldVariants = product.getVariants().stream()
+                .filter(v -> v.getId() != null)
+                .collect(Collectors.toMap(ProductVariant::getId, Function.identity()));
+
+        List<ProductVariant> updatedVariants = new ArrayList<>();
+        for (ProductVariantRequest reqVar : request.getVariants()) {
+            if (reqVar.getId() != null && oldVariants.containsKey(reqVar.getId())) {
+                ProductVariant variant = oldVariants.get(reqVar.getId());
+                variant.setColor(reqVar.getColor());
+
+                // detail images
+                if (reqVar.getDetailImages() != null) {
+                    Map<String, ProductImage> oldDetailImgs = variant.getDetailImages().stream()
+                            .filter(img -> img.getId() != null)
+                            .collect(Collectors.toMap(ProductImage::getId, Function.identity()));
+
+                    List<ProductImage> newDetailImgs = new ArrayList<>();
+                    for (ProductImageRequest imgReq : reqVar.getDetailImages()) {
+                        if (imgReq.getId() != null && oldDetailImgs.containsKey(imgReq.getId())) {
+                            ProductImage img = oldDetailImgs.get(imgReq.getId());
+                            if (imgReq.getFile() != null) {
+                                img.setUrl(saveFile(imgReq.getFile()));
+                            }
+                            newDetailImgs.add(img);
+                        } else {
+                            ProductImage img = mpImage(imgReq.getFile());
+                            img.setVariant(variant);
+                            newDetailImgs.add(img);
+                        }
+                    }
+                    variant.getDetailImages().clear();
+                    variant.getDetailImages().addAll(newDetailImgs);
+                }
+
+                // attributes
+                if (reqVar.getAttributes() != null) {
+                    Map<String, ProductAttribute> oldAttrs = variant.getAttributes().stream()
+                            .filter(a -> a.getId() != null)
+                            .collect(Collectors.toMap(ProductAttribute::getId, Function.identity()));
+
+                    List<ProductAttribute> newAttrs = new ArrayList<>();
+                    for (ProductAttributeRequest attrReq : reqVar.getAttributes()) {
+                        if (attrReq.getId() != null && oldAttrs.containsKey(attrReq.getId())) {
+                            ProductAttribute attr = oldAttrs.get(attrReq.getId());
+                            attr.setName(attrReq.getName());
+                            attr.setOriginalPrice(attrReq.getOriginalPrice());
+                            attr.setFinalPrice(attrReq.getFinalPrice());
+                            newAttrs.add(attr);
+                        } else {
+                            ProductAttribute attr = productAttributeMapper.toProductAttribute(attrReq);
+                            attr.setVariant(variant);
+                            newAttrs.add(attr);
+                        }
+                    }
+                    variant.getAttributes().clear();
+                    variant.getAttributes().addAll(newAttrs);
+                }
+                updatedVariants.add(variant);
+            } else {
+                // thêm variant mới
+                ProductVariant newVariant = productVariantMapper.toVariant(reqVar);
+                newVariant.setProduct(product);
+
+                if (reqVar.getDetailImages() != null) {
+                    newVariant.setDetailImages(mpDetailImages(reqVar.getDetailImages(), newVariant));
+                }
+                if (reqVar.getAttributes() != null) {
+                    newVariant.setAttributes(mpAttributes(reqVar.getAttributes(), newVariant));
+                }
+                updatedVariants.add(newVariant);
+            }
+        }
+
+        product.getVariants().clear();
+        product.getVariants().addAll(updatedVariants);
+    }
+    else{
+        
+    }
+    System.out.println("update");
+
+    System.out.println("=== PRODUCT UPDATE DEBUG ===");
+    System.out.println("Product ID: " + product.getId());
+    System.out.println("IntroImages: ");
+    product.getIntroImages().forEach(img ->
+            System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
+
+    System.out.println("Variants: ");
+    product.getVariants().forEach(variant -> {
+        System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
+
+        System.out.println("   DetailImages:");
+        variant.getDetailImages().forEach(img ->
+                System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
+
+        System.out.println("   Attributes:");
+        variant.getAttributes().forEach(attr ->
+                System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
+    });
+
+    return productMapper.toProductResponse(productRepository.save(product));
+}
+
+    // update new ----------------------------------------------------------------------------------------
     //delete
     public void delete(String productId){
         productRepository.deleteById(productId);

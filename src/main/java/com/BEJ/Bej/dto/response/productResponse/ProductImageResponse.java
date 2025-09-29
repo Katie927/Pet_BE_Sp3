@@ -3,19 +3,14 @@ package com.BEJ.Bej.dto.response.productResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductVariantResponse {
+public class ProductImageResponse {
 
     String id;
-    String color;
-
-    List<ProductImageResponse> detailImages;
-    List<ProductAttributeResponse> attributes;
+    String url;
 
 }

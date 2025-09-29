@@ -12,6 +12,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductVariantRequest {
 
+    String id;
     String color;
 
     int originalPrice;

@@ -10,6 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductAttributeResponse {
 
+    String id;
     String name;
 //    String value;
 

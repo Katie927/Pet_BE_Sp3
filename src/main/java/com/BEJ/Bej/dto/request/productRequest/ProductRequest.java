@@ -16,7 +16,7 @@ public class ProductRequest {
     String name;
     String description;
 
-    ProductImageRequest image;
+    MultipartFile image;
 
     int status;
 

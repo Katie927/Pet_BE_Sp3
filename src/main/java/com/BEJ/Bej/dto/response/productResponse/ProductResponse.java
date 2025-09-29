@@ -20,6 +20,6 @@ public class ProductResponse {
     int status;
     LocalDate createDate;
 
-    List<String> introImages;
+    List<ProductImageResponse> introImages;
     List<ProductVariantResponse> variants;
 }

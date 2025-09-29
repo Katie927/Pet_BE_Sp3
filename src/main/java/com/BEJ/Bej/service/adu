@@ -1,0 +1,120 @@
+@Transactional
+public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
+    Product product = productRepository.findById(productId).orElseThrow(
+            () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+    productMapper.updateProduct(product, request);
+
+    // cập nhật ảnh đại diện
+    if (request.getImage() != null) {
+        String image = saveFile(request.getImage());
+        product.setImage(image);
+    }
+
+    // intro images
+    if (request.getIntroImages() != null) {
+        Map<String, ProductImage> oldImages = product.getIntroImages().stream()
+                .filter(img -> img.getId() != null)
+                .collect(Collectors.toMap(ProductImage::getId, Function.identity()));
+
+        List<ProductImage> updatedImages = new ArrayList<>();
+        for (ProductImageRequest reqImg : request.getIntroImages()) {
+            if (reqImg.getId() != null && oldImages.containsKey(reqImg.getId())) {
+                ProductImage img = oldImages.get(reqImg.getId());
+                if (reqImg.getFile() != null) {
+                    img.setUrl(saveFile(reqImg.getFile()));
+                }
+                updatedImages.add(img);
+            } else {
+                ProductImage newImg = mpImage(reqImg.getFile());
+                newImg.setProduct(product);
+                updatedImages.add(newImg);
+            }
+        }
+
+        // dùng clear + addAll thay cho setIntroImages
+        product.getIntroImages().clear();
+        product.getIntroImages().addAll(updatedImages);
+    }
+
+    // variants
+    if (request.getVariants() != null) {
+        Map<String, ProductVariant> oldVariants = product.getVariants().stream()
+                .filter(v -> v.getId() != null)
+                .collect(Collectors.toMap(ProductVariant::getId, Function.identity()));
+
+        List<ProductVariant> updatedVariants = new ArrayList<>();
+        for (ProductVariantRequest reqVar : request.getVariants()) {
+            if (reqVar.getId() != null && oldVariants.containsKey(reqVar.getId())) {
+                ProductVariant variant = oldVariants.get(reqVar.getId());
+                variant.setColor(reqVar.getColor());
+
+                // detail images
+                if (reqVar.getDetailImages() != null) {
+                    Map<String, ProductImage> oldDetailImgs = variant.getDetailImages().stream()
+                            .filter(img -> img.getId() != null)
+                            .collect(Collectors.toMap(ProductImage::getId, Function.identity()));
+
+                    List<ProductImage> newDetailImgs = new ArrayList<>();
+                    for (ProductImageRequest imgReq : reqVar.getDetailImages()) {
+                        if (imgReq.getId() != null && oldDetailImgs.containsKey(imgReq.getId())) {
+                            ProductImage img = oldDetailImgs.get(imgReq.getId());
+                            if (imgReq.getFile() != null) {
+                                img.setUrl(saveFile(imgReq.getFile()));
+                            }
+                            newDetailImgs.add(img);
+                        } else {
+                            ProductImage img = mpImage(imgReq.getFile());
+                            img.setVariant(variant);
+                            newDetailImgs.add(img);
+                        }
+                    }
+                    variant.getDetailImages().clear();
+                    variant.getDetailImages().addAll(newDetailImgs);
+                }
+
+                // attributes
+                if (reqVar.getAttributes() != null) {
+                    Map<String, ProductAttribute> oldAttrs = variant.getAttributes().stream()
+                            .filter(a -> a.getId() != null)
+                            .collect(Collectors.toMap(ProductAttribute::getId, Function.identity()));
+
+                    List<ProductAttribute> newAttrs = new ArrayList<>();
+                    for (ProductAttributeRequest attrReq : reqVar.getAttributes()) {
+                        if (attrReq.getId() != null && oldAttrs.containsKey(attrReq.getId())) {
+                            ProductAttribute attr = oldAttrs.get(attrReq.getId());
+                            attr.setName(attrReq.getName());
+                            attr.setOriginalPrice(attrReq.getOriginalPrice());
+                            attr.setFinalPrice(attrReq.getFinalPrice());
+                            newAttrs.add(attr);
+                        } else {
+                            ProductAttribute attr = productAttributeMapper.toProductAttribute(attrReq);
+                            attr.setVariant(variant);
+                            newAttrs.add(attr);
+                        }
+                    }
+                    variant.getAttributes().clear();
+                    variant.getAttributes().addAll(newAttrs);
+                }
+                updatedVariants.add(variant);
+            } else {
+                // thêm variant mới
+                ProductVariant newVariant = productVariantMapper.toVariant(reqVar);
+                newVariant.setProduct(product);
+
+                if (reqVar.getDetailImages() != null) {
+                    newVariant.setDetailImages(mpDetailImages(reqVar.getDetailImages(), newVariant));
+                }
+                if (reqVar.getAttributes() != null) {
+                    newVariant.setAttributes(mpAttributes(reqVar.getAttributes(), newVariant));
+                }
+                updatedVariants.add(newVariant);
+            }
+        }
+
+        product.getVariants().clear();
+        product.getVariants().addAll(updatedVariants);
+    }
+
+    return productMapper.toProductResponse(productRepository.save(product));
+}
