@@ -6,15 +6,14 @@ import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.request.productRequest.ProductVariantRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
-import com.BEJ.Bej.entity.product.Product;
-import com.BEJ.Bej.entity.product.ProductAttribute;
-import com.BEJ.Bej.entity.product.ProductImage;
-import com.BEJ.Bej.entity.product.ProductVariant;
+import com.BEJ.Bej.entity.product.*;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
+import com.BEJ.Bej.mapper.CategoryMapper;
 import com.BEJ.Bej.mapper.ProductAttributeMapper;
 import com.BEJ.Bej.mapper.ProductMapper;
 import com.BEJ.Bej.mapper.ProductVariantMapper;
+import com.BEJ.Bej.repository.CategoryRepository;
 import com.BEJ.Bej.repository.ProductRepository;
 import com.BEJ.Bej.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -35,6 +34,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -46,8 +46,10 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     ProductRepository productRepository;
+    CategoryRepository categoryRepository;
 
     ProductMapper productMapper;
+    CategoryMapper categoryMapper;
     ProductVariantMapper productVariantMapper;
     ProductAttributeMapper productAttributeMapper;
 
@@ -78,8 +80,13 @@ public class ProductService {
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
-
         Product product = productMapper.toProduct(request);
+
+        Category category = categoryRepository.findById(request.getCategory().getId()).orElseThrow(
+                () -> new AppException(ErrorCode.ROLE_NOT_FOUND)
+        );
+        System.out.println("category: " + category.getId());
+        product.setCategory(category);
         product.setCreateDate(LocalDate.now());
         System.out.println(product.getName());
 
@@ -123,10 +130,15 @@ public class ProductService {
 @Transactional
 public ProductResponse updateProduct(String productId, ProductRequest request) throws IOException {
     Product product = productRepository.findById(productId).orElseThrow(
-            () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+            ()  -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
     productMapper.updateProduct(product, request);
-
+    Category category = categoryRepository.findById(request.getCategory().getId()).orElseThrow(
+            () -> new AppException(ErrorCode.ROLE_NOT_FOUND)
+    );
+    System.out.println("category: " + category.getId());
+    product.setCategory(category);
+    System.out.println(product.getCategory().getName());
     // cập nhật ảnh đại diện
     if (request.getImage() != null) {
         String image = saveFile(request.getImage());
@@ -236,9 +248,7 @@ public ProductResponse updateProduct(String productId, ProductRequest request) t
         product.getVariants().clear();
         product.getVariants().addAll(updatedVariants);
     }
-    else{
-        
-    }
+
     System.out.println("update");
 
     System.out.println("=== PRODUCT UPDATE DEBUG ===");

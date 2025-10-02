@@ -22,4 +22,6 @@ public class ProductResponse {
 
     List<ProductImageResponse> introImages;
     List<ProductVariantResponse> variants;
+
+    CategoryResponse category;
 }

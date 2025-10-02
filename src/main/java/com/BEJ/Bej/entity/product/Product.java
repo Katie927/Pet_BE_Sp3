@@ -21,6 +21,7 @@ public class Product {
     private String id;
 
     String name;
+    String pSku;
     String description;
     LocalDate createDate;
 
@@ -35,7 +36,7 @@ public class Product {
     @OrderColumn(name = "sort_index")
     List<ProductVariant> variants;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     Category category;
 
