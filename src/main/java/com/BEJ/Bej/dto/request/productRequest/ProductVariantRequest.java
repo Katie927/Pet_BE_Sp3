@@ -15,14 +15,6 @@ public class ProductVariantRequest {
     String id;
     String color;
 
-    int originalPrice;
-    int finalPrice;
-    int discount;
-
-    int stockQty = 0;
-    int soldQty = 0;
-
     List<ProductImageRequest> detailImages;
-
     List<ProductAttributeRequest> attributes;
 }

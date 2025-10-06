@@ -32,7 +32,7 @@ public class UserService {
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
-    RoleMapper roleMapper;
+//    RoleMapper roleMapper;
 
 // create User
     public UserResponse createUser(UserCreationRequest request){
@@ -61,10 +61,6 @@ public class UserService {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
-    public UserResponse getUser(String userId){
-        return userMapper.toUserResponse(userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User Not Found!")));
-    }
 
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(String userId, UserUpdateRequest request){
