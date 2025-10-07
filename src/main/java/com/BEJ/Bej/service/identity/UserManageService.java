@@ -31,9 +31,14 @@ public class UserManageService {
     UserRepository userRepository;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
-    @Autowired
     RoleRepository roleRepository;
 //    RoleMapper roleMapper;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getUsers(){
+        log.info("in method GET /users");
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     public UserResponse updateUser(String userId, UserUpdateRequest request){

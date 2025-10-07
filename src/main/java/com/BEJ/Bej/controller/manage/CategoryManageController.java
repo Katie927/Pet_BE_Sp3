@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/admin/category")
+@RequestMapping("/manage/category")
 public class CategoryManageController {
 
     CategoryService categoryService;
