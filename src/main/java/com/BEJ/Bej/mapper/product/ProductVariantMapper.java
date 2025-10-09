@@ -1,7 +1,6 @@
-package com.BEJ.Bej.mapper;
+package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductVariantRequest;
-import com.BEJ.Bej.dto.response.productResponse.ProductAttributeResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductVariantResponse;
 import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;

@@ -1,17 +1,14 @@
-package com.BEJ.Bej.mapper;
+package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.dto.response.productResponse.VariantSummaryResponse;
 import com.BEJ.Bej.entity.product.Product;
-import com.BEJ.Bej.entity.product.ProductAttribute;
-import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;
 import org.mapstruct.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {ProductVariantMapper.class, VariantSummaryResponse.class})
 public interface ProductMapper {

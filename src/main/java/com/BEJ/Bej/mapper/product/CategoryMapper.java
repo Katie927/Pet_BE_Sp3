@@ -1,4 +1,4 @@
-package com.BEJ.Bej.mapper;
+package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.request.productRequest.CategoryRequest;
 import com.BEJ.Bej.dto.response.productResponse.CategoryResponse;

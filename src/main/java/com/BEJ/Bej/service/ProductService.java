@@ -9,19 +9,17 @@ import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.*;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
-import com.BEJ.Bej.mapper.CategoryMapper;
-import com.BEJ.Bej.mapper.ProductAttributeMapper;
-import com.BEJ.Bej.mapper.ProductMapper;
-import com.BEJ.Bej.mapper.ProductVariantMapper;
+import com.BEJ.Bej.mapper.product.CategoryMapper;
+import com.BEJ.Bej.mapper.product.ProductAttributeMapper;
+import com.BEJ.Bej.mapper.product.ProductMapper;
+import com.BEJ.Bej.mapper.product.ProductVariantMapper;
 import com.BEJ.Bej.repository.CategoryRepository;
 import com.BEJ.Bej.repository.ProductRepository;
-import com.BEJ.Bej.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +32,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -76,7 +73,7 @@ public class ProductService {
 
     // add new
     public ProductResponse addNewProduct(ProductRequest request) throws IOException {
-        System.out.println("product add");
+        log.info("product add");
         if(productRepository.existsByName(request.getName())){
             throw new AppException(ErrorCode.USER_EXISTED);
         }
@@ -85,7 +82,6 @@ public class ProductService {
         Category category = categoryRepository.findById(request.getCategory().getId()).orElseThrow(
                 () -> new AppException(ErrorCode.ROLE_NOT_FOUND)
         );
-        System.out.println("category: " + category.getId());
         product.setCategory(category);
         product.setCreateDate(LocalDate.now());
         System.out.println(product.getName());
@@ -101,26 +97,25 @@ public class ProductService {
             List<ProductVariant> variants = mpVariants(request.getVariants(), product);
             product.setVariants(variants);
         }
-        System.out.println("=== PRODUCT UPDATE DEBUG ===");
-        System.out.println("Product ID: " + product.getId());
-        System.out.println("IntroImages: ");
-        product.getIntroImages().forEach(img ->
-                System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
-
-        System.out.println("Variants: ");
-        product.getVariants().forEach(variant -> {
-            System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
-
-            System.out.println("   DetailImages:");
-            variant.getDetailImages().forEach(img ->
-                    System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
-
-            System.out.println("   Attributes:");
-            variant.getAttributes().forEach(attr ->
-                    System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
-        });
-        System.out.println("update");
-
+//        System.out.println("=== PRODUCT UPDATE DEBUG ===");
+//        System.out.println("Product ID: " + product.getId());
+//        System.out.println("IntroImages: ");
+//        product.getIntroImages().forEach(img ->
+//                System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
+//
+//        System.out.println("Variants: ");
+//        product.getVariants().forEach(variant -> {
+//            System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
+//
+//            System.out.println("   DetailImages:");
+//            variant.getDetailImages().forEach(img ->
+//                    System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
+//
+//            System.out.println("   Attributes:");
+//            variant.getAttributes().forEach(attr ->
+//                    System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
+//        });
+//        System.out.println("update");
 
         return productMapper.toProductResponse(productRepository.save(product));
     }

@@ -25,6 +25,10 @@ public class WorkSchedule {
     @JoinColumn(name = "user_id")
     User user;
 
+    @ManyToOne
+    @JoinColumn(name = "shift_name")
+    private Shift shift;
+
     LocalDate workDate;
 
 }

@@ -1,4 +1,4 @@
-package com.BEJ.Bej.mapper;
+package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.response.productResponse.ProductImageResponse;
 import com.BEJ.Bej.entity.product.ProductImage;
