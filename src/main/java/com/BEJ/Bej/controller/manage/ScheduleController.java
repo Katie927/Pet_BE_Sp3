@@ -10,10 +10,7 @@ import com.BEJ.Bej.service.work.ScheduleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,18 +28,25 @@ public class ScheduleController {
 //                .result(scheduleService.getScheduleMonthly(request))
 //                .build();
 //    }
-//
-//    @PostMapping
-//    ApiResponse<ScheduleResponse> addSchedule(ScheduleAddRequest request){
-//        return ApiResponse.<ScheduleResponse>builder()
-//                .result(scheduleService.add)
-//                .build()
-//    }
+
+    @PostMapping
+    ApiResponse<ScheduleResponse> addSchedule(ScheduleAddRequest request){
+        return ApiResponse.<ScheduleResponse>builder()
+                .result(scheduleService.addWorkSchedule(request))
+                .build();
+    }
 
     @PostMapping("/shift")
-    ApiResponse<ShiftResponse> addWorkShift(ShiftRequest request){
+    ApiResponse<ShiftResponse> addWorkShift(@RequestBody ShiftRequest request){
         return ApiResponse.<ShiftResponse>builder()
                 .result(scheduleService.addWorkShift(request))
+                .build();
+    }
+
+    @GetMapping("/shifts")
+    ApiResponse<List<ShiftResponse>> getWorkShift(){
+        return ApiResponse.<List<ShiftResponse>>builder()
+                .result(scheduleService.getWorkShift())
                 .build();
     }
 

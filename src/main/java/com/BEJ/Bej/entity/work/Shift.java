@@ -16,6 +16,9 @@ import java.time.LocalTime;
 public class Shift {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
     private String name;           // "Ca sáng", "Ca chiều", "Ca tối"
     private LocalTime startTime;
     private LocalTime endTime;

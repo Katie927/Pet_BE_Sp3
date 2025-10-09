@@ -36,7 +36,7 @@ public class UserManageService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers(){
-        log.info("in method GET /users");
+//        log.info("in method GET /users");
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
