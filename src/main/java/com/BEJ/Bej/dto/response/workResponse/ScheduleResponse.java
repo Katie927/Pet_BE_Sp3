@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ScheduleResponse {
 
+    String shiftName;
     String userName;
     LocalDate workDate;
 

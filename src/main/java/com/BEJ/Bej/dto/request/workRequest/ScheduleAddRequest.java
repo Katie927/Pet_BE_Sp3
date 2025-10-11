@@ -14,6 +14,6 @@ public class ScheduleAddRequest {
 
     String userId;
     LocalDate workDate;
-    String shiftId;
+    Long shiftId;
 
 }

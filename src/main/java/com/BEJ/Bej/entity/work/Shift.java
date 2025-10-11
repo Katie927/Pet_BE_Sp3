@@ -19,8 +19,8 @@ public class Shift {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    private String name;           // "Ca sáng", "Ca chiều", "Ca tối"
-    private LocalTime startTime;
-    private LocalTime endTime;
+    String name;           // "Ca sáng", "Ca chiều", "Ca tối"
+    LocalTime startTime;
+    LocalTime endTime;
 
 }

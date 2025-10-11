@@ -12,8 +12,9 @@ import java.time.LocalTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShiftResponse {
 
-    private String name;           // "Ca sáng", "Ca chiều", "Ca tối"
-    private LocalTime startTime;
-    private LocalTime endTime;
+    Long id;
+    String name;           // "Ca sáng", "Ca chiều", "Ca tối"
+    LocalTime startTime;
+    LocalTime endTime;
 
 }

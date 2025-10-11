@@ -5,10 +5,14 @@ import com.BEJ.Bej.dto.request.workRequest.ScheduleGetRequest;
 import com.BEJ.Bej.dto.request.workRequest.ShiftRequest;
 import com.BEJ.Bej.dto.response.workResponse.ScheduleResponse;
 import com.BEJ.Bej.dto.response.workResponse.ShiftResponse;
+import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.entity.work.Shift;
 import com.BEJ.Bej.entity.work.WorkSchedule;
+import com.BEJ.Bej.exception.AppException;
+import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.workSchedule.ScheduleMapper;
 import com.BEJ.Bej.mapper.workSchedule.ShiftMapper;
+import com.BEJ.Bej.repository.UserRepository;
 import com.BEJ.Bej.repository.workSchedule.ScheduleRepository;
 import com.BEJ.Bej.repository.workSchedule.ShiftRepository;
 import lombok.AccessLevel;
@@ -29,14 +33,26 @@ public class ScheduleService {
     ShiftRepository shiftRepository;
     ScheduleMapper scheduleMapper;
     ScheduleRepository scheduleRepository;
+    UserRepository userRepository;
 
-//    public List<ScheduleResponse> getScheduleMonthly(ScheduleGetRequest request){
-//        return
-//    }
-//
+    public List<ScheduleResponse> getScheduleMonthly(ScheduleGetRequest request){
+        return scheduleRepository
+                .findByDateRange(request.getStartOfMonth(), request.getEndOfMonth())
+                .stream().map(scheduleMapper::toScheduleResponse).toList();
+    }
+
     public ScheduleResponse addWorkSchedule(ScheduleAddRequest request){
         log.info("Add Schedule");
+        log.info(request.getUserId());
         WorkSchedule schedule = scheduleMapper.toSchedule(request);
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        schedule.setUser(user);
+        Shift shift = shiftRepository.findById(request.getShiftId())
+                        .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        schedule.setShift(shift);
+        log.info(schedule.getUser().getFullName());
+        log.info(schedule.getShift().getName());
         return scheduleMapper.toScheduleResponse(scheduleRepository.save(schedule));
     }
 

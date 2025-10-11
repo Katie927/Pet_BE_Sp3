@@ -22,15 +22,15 @@ public class ScheduleController {
 
     ScheduleService scheduleService;
 
-//    @GetMapping
-//    ApiResponse<List<ScheduleResponse>> getScheduleMonthly(ScheduleGetRequest request){
-//        return ApiResponse.<List<ScheduleResponse>>builder()
-//                .result(scheduleService.getScheduleMonthly(request))
-//                .build();
-//    }
+    @GetMapping
+    ApiResponse<List<ScheduleResponse>> getScheduleMonthly(@RequestBody ScheduleGetRequest request){
+        return ApiResponse.<List<ScheduleResponse>>builder()
+                .result(scheduleService.getScheduleMonthly(request))
+                .build();
+    }
 
     @PostMapping
-    ApiResponse<ScheduleResponse> addSchedule(ScheduleAddRequest request){
+    ApiResponse<ScheduleResponse> addSchedule(@RequestBody ScheduleAddRequest request){
         return ApiResponse.<ScheduleResponse>builder()
                 .result(scheduleService.addWorkSchedule(request))
                 .build();
