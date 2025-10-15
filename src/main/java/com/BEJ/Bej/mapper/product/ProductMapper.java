@@ -33,10 +33,12 @@ public interface ProductMapper {
         }
         ProductVariant v = variants.getFirst();
         VariantSummaryResponse summary = new VariantSummaryResponse();
-        if(v != null && v.getDetailImages() != null && !v.getDetailImages().isEmpty())
-            summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
-//        summary.setOriginalPrice(v.getOriginalPrice());
-//        summary.setFinalPrice(v.getFinalPrice());
+        if(v != null && v.getDetailImages() != null && !v.getDetailImages().isEmpty()){
+            summary.setOriginalPrice(v.getAttributes().getFirst().getOriginalPrice());
+            summary.setFinalPrice(v.getAttributes().getFirst().getFinalPrice());
+        }
+//            summary.setThumbnail(v.getDetailImages().getFirst().getUrl());
+
         return summary;
     }
 

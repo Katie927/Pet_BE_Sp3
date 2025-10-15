@@ -12,6 +12,5 @@ public class VariantSummaryResponse {
 
     int originalPrice;
     int finalPrice;
-    String thumbnail;
 
 }
