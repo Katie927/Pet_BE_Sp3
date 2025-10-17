@@ -1,6 +1,7 @@
 package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductVariantRequest;
+import com.BEJ.Bej.dto.response.guest.ProductVariantDetailRes;
 import com.BEJ.Bej.dto.response.productResponse.ProductVariantResponse;
 import com.BEJ.Bej.entity.product.ProductImage;
 import com.BEJ.Bej.entity.product.ProductVariant;
@@ -20,6 +21,7 @@ public interface ProductVariantMapper {
     @Mapping(source = "color", target = "color")
     @Mapping(source = "attributes", target = "attributes")
     ProductVariantResponse toVariantResponse(ProductVariant variant);
+    ProductVariantDetailRes toVariantDetailRes(ProductVariant variant);
 
     List<ProductVariantResponse> toVariantResponseList(List<ProductVariant> variants);
 

@@ -1,6 +1,7 @@
 package com.BEJ.Bej.mapper.product;
 
 import com.BEJ.Bej.dto.request.productRequest.ProductRequest;
+import com.BEJ.Bej.dto.response.guest.ProductDetailResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
 import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.dto.response.productResponse.VariantSummaryResponse;
@@ -20,6 +21,7 @@ public interface ProductMapper {
 //    @Mapping(source = "status", target = "status")
     @Mapping(source = "id", target = "id")
     ProductResponse toProductResponse(Product product);
+    ProductDetailResponse toProductDetailResponse(Product product);
     List<ProductResponse> toResponseList(List<Product> products);
 
 
