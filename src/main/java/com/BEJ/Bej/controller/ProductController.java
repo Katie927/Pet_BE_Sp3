@@ -2,9 +2,8 @@ package com.BEJ.Bej.controller;
 
 
 import com.BEJ.Bej.dto.request.ApiResponse;
-import com.BEJ.Bej.dto.response.guest.ProductDetailResponse;
+import com.BEJ.Bej.dto.response.guest.ProductDetailRes;
 import com.BEJ.Bej.dto.response.productResponse.ProductListResponse;
-import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.service.ProductService;
 import com.BEJ.Bej.service.guest.GuestProductService;
 import lombok.AccessLevel;
@@ -20,7 +19,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/")
+@RequestMapping("/home")
 public class ProductController {
 
     ProductService productService;
@@ -35,8 +34,8 @@ public class ProductController {
     }
 
     @GetMapping("/product/{productId}")
-    ApiResponse<ProductDetailResponse> getProductDetails(@PathVariable String productId){
-        return ApiResponse.<ProductDetailResponse>builder()
+    ApiResponse<ProductDetailRes> getProductDetails(@PathVariable String productId){
+        return ApiResponse.<ProductDetailRes>builder()
                 .result(guestProductService.getProductDetails(productId))
                 .build();
     }

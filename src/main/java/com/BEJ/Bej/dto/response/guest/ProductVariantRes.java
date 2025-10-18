@@ -1,7 +1,5 @@
 package com.BEJ.Bej.dto.response.guest;
 
-import com.BEJ.Bej.dto.response.productResponse.ProductAttributeResponse;
-import com.BEJ.Bej.dto.response.productResponse.ProductImageResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,11 +10,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductVariantDetailRes {
+public class ProductVariantRes {
 
     String color;
 
-    List<ProductImageResponse> detailImages;
+    List<ProductImgRes> detailImages;
     List<ProductAttRes> attributes;
 
 }

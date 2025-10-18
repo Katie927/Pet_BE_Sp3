@@ -1,6 +1,5 @@
 package com.BEJ.Bej.dto.response.guest;
 
-import com.BEJ.Bej.dto.response.productResponse.ProductImageResponse;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductDetailResponse {
+public class ProductDetailRes {
 
     String name;
     String image;
@@ -20,7 +19,7 @@ public class ProductDetailResponse {
     int status;
     LocalDate createDate;
 
-    List<ProductImageResponse> introImages;
-    List<ProductVariantDetailRes> variants;
+    List<ProductImgRes> introImages;
+    List<ProductVariantRes> variants;
 
 }
