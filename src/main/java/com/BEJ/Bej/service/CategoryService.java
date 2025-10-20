@@ -6,7 +6,7 @@ import com.BEJ.Bej.entity.product.Category;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.product.CategoryMapper;
-import com.BEJ.Bej.repository.CategoryRepository;
+import com.BEJ.Bej.repository.product.CategoryRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

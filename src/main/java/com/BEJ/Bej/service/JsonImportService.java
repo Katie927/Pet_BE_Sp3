@@ -2,7 +2,7 @@
 //
 //import com.BEJ.Bej.entity.product.Product;
 //import com.BEJ.Bej.entity.product.ProductAttribute;
-//import com.BEJ.Bej.repository.ProductRepository;
+//import com.BEJ.Bej.repository.product.ProductRepository;
 //import com.fasterxml.jackson.core.type.TypeReference;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import jakarta.annotation.PostConstruct;

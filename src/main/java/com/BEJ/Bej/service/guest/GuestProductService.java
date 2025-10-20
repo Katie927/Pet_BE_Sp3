@@ -4,7 +4,7 @@ import com.BEJ.Bej.dto.response.guest.ProductDetailRes;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
 import com.BEJ.Bej.mapper.product.ProductMapper;
-import com.BEJ.Bej.repository.ProductRepository;
+import com.BEJ.Bej.repository.product.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

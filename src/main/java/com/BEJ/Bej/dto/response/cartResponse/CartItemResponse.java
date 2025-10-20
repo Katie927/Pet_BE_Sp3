@@ -1,5 +1,6 @@
-package com.BEJ.Bej.dto.response.productResponse;
+package com.BEJ.Bej.dto.response.cartResponse;
 
+import com.BEJ.Bej.entity.product.ProductAttribute;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,9 +9,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VariantSummaryResponse {
+public class CartItemResponse {
 
-    double originalPrice;
-    double finalPrice;
+    ProductAttribute productA;
 
 }

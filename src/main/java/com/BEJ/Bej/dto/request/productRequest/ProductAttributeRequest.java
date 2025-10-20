@@ -14,9 +14,9 @@ public class ProductAttributeRequest {
     String name;
 //    String value;
 
-    int originalPrice;
-    int finalPrice;
-    int discount;
+    double originalPrice;
+    double finalPrice;
+    double discount;
 
     int stockQuantity;
     int soldQuantity;

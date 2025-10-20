@@ -1,4 +1,4 @@
-package com.BEJ.Bej.repository;
+package com.BEJ.Bej.repository.product;
 
 import com.BEJ.Bej.entity.product.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
