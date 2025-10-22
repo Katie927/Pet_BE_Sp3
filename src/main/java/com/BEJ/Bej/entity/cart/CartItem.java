@@ -33,4 +33,6 @@ public class CartItem {
     double price;
     LocalDate addedAt;
 
+    String productName;
+
 }

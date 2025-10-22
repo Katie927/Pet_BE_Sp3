@@ -1,6 +1,5 @@
 package com.BEJ.Bej.service.guest;
 
-import com.BEJ.Bej.dto.request.cartRequest.AddToCartRequest;
 import com.BEJ.Bej.dto.response.cartResponse.CartItemResponse;
 import com.BEJ.Bej.entity.cart.CartItem;
 import com.BEJ.Bej.entity.identity.User;
@@ -19,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -31,22 +32,41 @@ public class CartService {
     CartItemMapper cartItemMapper;
     CartItemRepository cartItemRepository;
 
-    public CartItemResponse addtoCart(AddToCartRequest request){
+    public CartItemResponse addToCart(String attId){
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         log.info(name);
         User user = userRepository.findByEmail(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        ProductAttribute productA = productAttributeRepository.findById(request.getProductAttId()).orElseThrow(
+        ProductAttribute productA = productAttributeRepository.findById(attId).orElseThrow(
                 () -> new AppException(ErrorCode.UNAUTHENTICATED));
 
-        CartItem cartItem = new CartItem();
-        cartItem.setUser(user);
-        cartItem.setProductA(productA);
-        cartItem.setQuantity(1);
-        cartItem.setPrice(productA.getFinalPrice());
+        CartItem cartItem = cartItemRepository.findByUser_IdAndProductA_Id(user.getId(), productA.getId());
+
+        if( cartItem == null){
+            cartItem = new CartItem();
+            cartItem.setUser(user);
+            cartItem.setProductA(productA);
+            cartItem.setQuantity(1);
+            cartItem.setPrice(productA.getFinalPrice());
+            cartItem.setProductName(productA.getVariant().getProduct().getName());
+        } else {
+            cartItem.setQuantity(cartItem.getQuantity() +1);
+        }
 
         return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
     }
 
+    public List<CartItemResponse> viewCart(){
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        log.info(name);
+        User user = userRepository.findByEmail(name).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return cartItemRepository.findAllByUserId(user.getId()).stream().map(cartItemMapper::toCartItemResponse).toList();
+    }
+
+    public void placeOrder(){
+
+    }
 }
