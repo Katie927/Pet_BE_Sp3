@@ -47,11 +47,12 @@ public class CartService {
             cartItem = new CartItem();
             cartItem.setUser(user);
             cartItem.setProductA(productA);
+            cartItem.setColor(productA.getVariant().getColor());
             cartItem.setQuantity(1);
             cartItem.setPrice(productA.getFinalPrice());
             cartItem.setProductName(productA.getVariant().getProduct().getName());
         } else {
-            cartItem.setQuantity(cartItem.getQuantity() +1);
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
 
         return cartItemMapper.toCartItemResponse(cartItemRepository.save(cartItem));
