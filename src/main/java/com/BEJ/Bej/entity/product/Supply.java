@@ -1,6 +1,5 @@
-package com.BEJ.Bej.entity.cart;
+package com.BEJ.Bej.entity.product;
 
-import com.BEJ.Bej.entity.product.ProductAttribute;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,23 +10,18 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderItem {
+public class Supply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    Orders order;
+    int type; // import / export
 
     @ManyToOne
     @JoinColumn(name = "attribute_id")
     ProductAttribute productA;
 
     int quantity;
-
-    @Column(nullable = false)
     double price;
-
 }

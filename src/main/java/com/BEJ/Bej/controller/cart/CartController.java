@@ -32,4 +32,10 @@ public class CartController {
                 .build();
     }
 
+    ApiResponse<OrderResponse> placeOrder(){
+        return ApiResponse.<OrderResponse>builder()
+                .result(cartService.placeOrder())
+                .build();
+    }
+
 }
