@@ -36,4 +36,5 @@ public class CartItem {
     String color;
     String productName;
 
+    String img;
 }
