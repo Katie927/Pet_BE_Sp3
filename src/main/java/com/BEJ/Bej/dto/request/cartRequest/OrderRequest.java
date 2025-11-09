@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,8 +14,12 @@ import java.time.LocalDate;
 public class OrderRequest {
 
     String phoneNumber;
+    String email;
     String address;
-    LocalDate updatedAt;
-    LocalDate orderAt;
+
+    String description;
+
+    double totalPrice;
+    List<OrderItemRequest> items;
 
 }

@@ -1,5 +1,6 @@
 package com.BEJ.Bej.dto.response.cartResponse;
 
+import com.BEJ.Bej.entity.cart.Orders;
 import com.BEJ.Bej.entity.product.ProductAttribute;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -9,9 +10,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItemResponse {
-
-    String attId;
+public class OrderItemResponse {
 
     String img;
 

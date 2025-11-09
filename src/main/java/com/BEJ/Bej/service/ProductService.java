@@ -9,7 +9,6 @@ import com.BEJ.Bej.dto.response.productResponse.ProductResponse;
 import com.BEJ.Bej.entity.product.*;
 import com.BEJ.Bej.exception.AppException;
 import com.BEJ.Bej.exception.ErrorCode;
-import com.BEJ.Bej.mapper.product.CategoryMapper;
 import com.BEJ.Bej.mapper.product.ProductAttributeMapper;
 import com.BEJ.Bej.mapper.product.ProductMapper;
 import com.BEJ.Bej.mapper.product.ProductVariantMapper;
@@ -46,7 +45,6 @@ public class ProductService {
     CategoryRepository categoryRepository;
 
     ProductMapper productMapper;
-    CategoryMapper categoryMapper;
     ProductVariantMapper productVariantMapper;
     ProductAttributeMapper productAttributeMapper;
 
@@ -97,25 +95,6 @@ public class ProductService {
             List<ProductVariant> variants = mpVariants(request.getVariants(), product);
             product.setVariants(variants);
         }
-//        System.out.println("=== PRODUCT UPDATE DEBUG ===");
-//        System.out.println("Product ID: " + product.getId());
-//        System.out.println("IntroImages: ");
-//        product.getIntroImages().forEach(img ->
-//                System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
-//
-//        System.out.println("Variants: ");
-//        product.getVariants().forEach(variant -> {
-//            System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
-//
-//            System.out.println("   DetailImages:");
-//            variant.getDetailImages().forEach(img ->
-//                    System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
-//
-//            System.out.println("   Attributes:");
-//            variant.getAttributes().forEach(attr ->
-//                    System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
-//        });
-//        System.out.println("update");
 
         return productMapper.toProductResponse(productRepository.save(product));
     }
@@ -173,8 +152,9 @@ public ProductResponse updateProduct(String productId, ProductRequest request) t
 
         List<ProductVariant> updatedVariants = new ArrayList<>();
         for (ProductVariantRequest reqVar : request.getVariants()) {
+            ProductVariant variant;
             if (reqVar.getId() != null && oldVariants.containsKey(reqVar.getId())) {
-                ProductVariant variant = oldVariants.get(reqVar.getId());
+                variant = oldVariants.get(reqVar.getId());
                 variant.setColor(reqVar.getColor());
 
                 // detail images
@@ -185,17 +165,17 @@ public ProductResponse updateProduct(String productId, ProductRequest request) t
 
                     List<ProductImage> newDetailImgs = new ArrayList<>();
                     for (ProductImageRequest imgReq : reqVar.getDetailImages()) {
+                        ProductImage img;
                         if (imgReq.getId() != null && oldDetailImgs.containsKey(imgReq.getId())) {
-                            ProductImage img = oldDetailImgs.get(imgReq.getId());
+                            img = oldDetailImgs.get(imgReq.getId());
                             if (imgReq.getFile() != null) {
                                 img.setUrl(saveFile(imgReq.getFile()));
                             }
-                            newDetailImgs.add(img);
                         } else {
-                            ProductImage img = mpImage(imgReq.getFile());
+                            img = mpImage(imgReq.getFile());
                             img.setVariant(variant);
-                            newDetailImgs.add(img);
                         }
+                        newDetailImgs.add(img);
                     }
                     variant.getDetailImages().clear();
                     variant.getDetailImages().addAll(newDetailImgs);
@@ -209,35 +189,34 @@ public ProductResponse updateProduct(String productId, ProductRequest request) t
 
                     List<ProductAttribute> newAttrs = new ArrayList<>();
                     for (ProductAttributeRequest attrReq : reqVar.getAttributes()) {
+                        ProductAttribute attr;
                         if (attrReq.getId() != null && oldAttrs.containsKey(attrReq.getId())) {
-                            ProductAttribute attr = oldAttrs.get(attrReq.getId());
+                            attr = oldAttrs.get(attrReq.getId());
                             attr.setName(attrReq.getName());
                             attr.setOriginalPrice(attrReq.getOriginalPrice());
                             attr.setFinalPrice(attrReq.getFinalPrice());
-                            newAttrs.add(attr);
                         } else {
-                            ProductAttribute attr = productAttributeMapper.toProductAttribute(attrReq);
+                            attr = productAttributeMapper.toProductAttribute(attrReq);
                             attr.setVariant(variant);
-                            newAttrs.add(attr);
                         }
+                        newAttrs.add(attr);
                     }
                     variant.getAttributes().clear();
                     variant.getAttributes().addAll(newAttrs);
                 }
-                updatedVariants.add(variant);
             } else {
                 // thêm variant mới
-                ProductVariant newVariant = productVariantMapper.toVariant(reqVar);
-                newVariant.setProduct(product);
+                variant = productVariantMapper.toVariant(reqVar);
+                variant.setProduct(product);
 
                 if (reqVar.getDetailImages() != null) {
-                    newVariant.setDetailImages(mpDetailImages(reqVar.getDetailImages(), newVariant));
+                    variant.setDetailImages(mpDetailImages(reqVar.getDetailImages(), variant));
                 }
                 if (reqVar.getAttributes() != null) {
-                    newVariant.setAttributes(mpAttributes(reqVar.getAttributes(), newVariant));
+                    variant.setAttributes(mpAttributes(reqVar.getAttributes(), variant));
                 }
-                updatedVariants.add(newVariant);
             }
+            updatedVariants.add(variant);
         }
 
         product.getVariants().clear();
@@ -246,24 +225,24 @@ public ProductResponse updateProduct(String productId, ProductRequest request) t
 
     System.out.println("update");
 
-    System.out.println("=== PRODUCT UPDATE DEBUG ===");
-    System.out.println("Product ID: " + product.getId());
-    System.out.println("IntroImages: ");
-    product.getIntroImages().forEach(img ->
-            System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
-
-    System.out.println("Variants: ");
-    product.getVariants().forEach(variant -> {
-        System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
-
-        System.out.println("   DetailImages:");
-        variant.getDetailImages().forEach(img ->
-                System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
-
-        System.out.println("   Attributes:");
-        variant.getAttributes().forEach(attr ->
-                System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
-    });
+//    System.out.println("=== PRODUCT UPDATE DEBUG ===");
+//    System.out.println("Product ID: " + product.getId());
+//    System.out.println("IntroImages: ");
+//    product.getIntroImages().forEach(img ->
+//            System.out.println(" - id=" + img.getId() + ", url=" + img.getUrl()));
+//
+//    System.out.println("Variants: ");
+//    product.getVariants().forEach(variant -> {
+//        System.out.println(" - Variant id=" + variant.getId() + ", color=" + variant.getColor());
+//
+//        System.out.println("   DetailImages:");
+//        variant.getDetailImages().forEach(img ->
+//                System.out.println("     * id=" + img.getId() + ", url=" + img.getUrl()));
+//
+//        System.out.println("   Attributes:");
+//        variant.getAttributes().forEach(attr ->
+//                System.out.println("     * id=" + attr.getId() + ", name=" + attr.getName()));
+//    });
 
     return productMapper.toProductResponse(productRepository.save(product));
 }
@@ -292,8 +271,6 @@ private List<ProductVariant> mpVariants(List<ProductVariantRequest> variantReque
 
                 variant.setProduct(product);
                 variant.setColor(req.getColor());
-//                    variant.setOriginalPrice(req.getOriginalPrice());
-//                    variant.setFinalPrice(req.getFinalPrice());
 
                 if(req.getDetailImages() != null){
                     System.out.println("list images!");

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface CartItemMapper {
 
     @Mapping(target = "productAttName", source = "productA.name")
+    @Mapping(target = "attId", source = "productA.id")
     CartItemResponse toCartItemResponse(CartItem cartItem);
 
 }
