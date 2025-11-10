@@ -1,9 +1,9 @@
 package com.BEJ.Bej.service.guest;
 
-import com.BEJ.Bej.dto.request.cartRequest.OrderItemRequest;
 import com.BEJ.Bej.dto.request.cartRequest.OrderRequest;
 import com.BEJ.Bej.dto.response.cartResponse.CartItemResponse;
-import com.BEJ.Bej.dto.response.cartResponse.OrderResponse;
+import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
+import com.BEJ.Bej.dto.response.cartResponse.OrdersResponse;
 import com.BEJ.Bej.entity.cart.CartItem;
 import com.BEJ.Bej.entity.cart.OrderItem;
 import com.BEJ.Bej.entity.cart.Orders;
@@ -26,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -48,7 +47,7 @@ public class CartService {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         log.info(name);
-        User user = userRepository.findByEmail(name).orElseThrow(
+        User user = userRepository.findByPhoneNumber(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
         ProductAttribute productA = productAttributeRepository.findById(attId).orElseThrow(
                 () -> new AppException(ErrorCode.UNAUTHENTICATED));
@@ -75,16 +74,16 @@ public class CartService {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         log.info(name);
-        User user = userRepository.findByEmail(name).orElseThrow(
+        User user = userRepository.findByPhoneNumber(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
         return cartItemRepository.findAllByUserId(user.getId()).stream().map(cartItemMapper::toCartItemResponse).toList();
     }
 
-    public OrderResponse placeOrder(OrderRequest request) {
+    public OrderDetailsResponse placeOrder(OrderRequest request) {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
         log.info(name);
-        User user = userRepository.findByEmail(name).orElseThrow(
+        User user = userRepository.findByPhoneNumber(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Orders orders = orderMapper.toOrder(request);
@@ -107,6 +106,28 @@ public class CartService {
 
         Orders saved = ordersRepository.save(orders);
 
-        return orderMapper.toOrderResponse(saved);
+        return orderMapper.toOrderDetailsResponse(saved);
     }
+
+    public List<OrderDetailsResponse> getMyOrder(){
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        log.info(name);
+        User user = userRepository.findByPhoneNumber(name).orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        List<Orders> orders = ordersRepository.findAllByUserId(user.getId());
+
+        return orders.stream().map(orderMapper::toOrderDetailsResponse).toList();
+    }
+
+//  ======================================================================================
+    public List<OrdersResponse> getAllOrders(){
+        return ordersRepository.findAllByOrderByOrderAtDesc().stream().map(orderMapper::toOrdersResponse).toList();
+    }
+
+    public OrderDetailsResponse getOrderDetails(String orderId){
+        return ordersRepository.findById(orderId).map(orderMapper::toOrderDetailsResponse)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
 }

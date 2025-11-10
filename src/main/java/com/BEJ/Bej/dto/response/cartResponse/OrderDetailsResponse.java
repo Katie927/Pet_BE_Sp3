@@ -12,9 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderResponse {
+public class OrderDetailsResponse {
 
     String id;
+
+    String userName;
 
     String phoneNumber;
     String email;
@@ -23,6 +25,8 @@ public class OrderResponse {
     LocalDate orderAt;
 
     String description;
+
+    double totalPrice;
 
     List<OrderItemResponse> orderItems = new ArrayList<>();
 }

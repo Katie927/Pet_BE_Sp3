@@ -3,7 +3,7 @@ package com.BEJ.Bej.controller.cart;
 import com.BEJ.Bej.dto.request.ApiResponse;
 import com.BEJ.Bej.dto.request.cartRequest.OrderRequest;
 import com.BEJ.Bej.dto.response.cartResponse.CartItemResponse;
-import com.BEJ.Bej.dto.response.cartResponse.OrderResponse;
+import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
 import com.BEJ.Bej.service.guest.CartService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +35,18 @@ public class CartController {
     }
 
     @PostMapping("/place-order")
-    ApiResponse<OrderResponse> placeOrder(@RequestBody OrderRequest request){
-        return ApiResponse.<OrderResponse>builder()
+    ApiResponse<OrderDetailsResponse> placeOrder(@RequestBody OrderRequest request){
+        return ApiResponse.<OrderDetailsResponse>builder()
                 .result(cartService.placeOrder(request))
                 .build();
     }
+
+    @GetMapping("/my-order")
+    ApiResponse<List<OrderDetailsResponse>> getMyOrders(){
+        return ApiResponse.<List<OrderDetailsResponse>>builder()
+                .result(cartService.getMyOrder())
+                .build();
+    }
+
 
 }

@@ -37,4 +37,7 @@ public class Orders {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderItem> orderItems = new ArrayList<>();
 
+    int type;
+    int status;
+
 }
