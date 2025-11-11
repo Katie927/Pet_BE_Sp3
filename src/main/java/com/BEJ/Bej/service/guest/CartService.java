@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -61,8 +62,8 @@ public class CartService {
             cartItem.setColor(productA.getVariant().getColor());
             cartItem.setQuantity(1);
             cartItem.setPrice(productA.getFinalPrice());
+            cartItem.setAddedAt(LocalDate.now());
             cartItem.setProductName(productA.getVariant().getProduct().getName());
-            cartItem.setImg(productA.getVariant().getDetailImages().getFirst().getUrl());
         } else {
             cartItem.setQuantity(cartItem.getQuantity() + 1);
         }
@@ -82,30 +83,35 @@ public class CartService {
     public OrderDetailsResponse placeOrder(OrderRequest request) {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
-        log.info(name);
         User user = userRepository.findByPhoneNumber(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Orders orders = orderMapper.toOrder(request);
         orders.setUser(user);
 
-        List<OrderItem> orderItems = request.getItems().stream().map(itemReq -> {
-            OrderItem orderItem = orderMapper.toOrderItem(itemReq);
-
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (var itemReq : request.getItems()) {
+            log.info(itemReq.getCartItemId());
             ProductAttribute productAtt = productAttributeRepository
                     .findById(itemReq.getProductAttId())
                     .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-
+            OrderItem orderItem = orderMapper.toOrderItem(itemReq);
             orderItem.setProductA(productAtt);
             orderItem.setOrder(orders);
-            return orderItem;
-        }).toList();
+            orderItem.setPrice(productAtt.getFinalPrice());
+            cartItemRepository.deleteById(itemReq.getCartItemId());
 
+            orderItems.add(orderItem);
+        }
+        double totalPrice = orderItems.stream()
+                .mapToDouble(OrderItem::getPrice)
+                .sum();
+
+        orders.setTotalPrice(totalPrice);
         orders.setOrderItems(orderItems);
         orders.setOrderAt(LocalDate.now());
 
         Orders saved = ordersRepository.save(orders);
-
         return orderMapper.toOrderDetailsResponse(saved);
     }
 

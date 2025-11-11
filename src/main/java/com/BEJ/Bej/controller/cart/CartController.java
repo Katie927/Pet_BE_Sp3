@@ -5,6 +5,7 @@ import com.BEJ.Bej.dto.request.cartRequest.OrderRequest;
 import com.BEJ.Bej.dto.response.cartResponse.CartItemResponse;
 import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
 import com.BEJ.Bej.service.guest.CartService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,6 +35,7 @@ public class CartController {
                 .build();
     }
 
+    @Transactional
     @PostMapping("/place-order")
     ApiResponse<OrderDetailsResponse> placeOrder(@RequestBody OrderRequest request){
         return ApiResponse.<OrderDetailsResponse>builder()
