@@ -4,6 +4,7 @@ import com.BEJ.Bej.dto.request.ApiResponse;
 import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
 import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
+import com.BEJ.Bej.dto.response.guest.GuestInfoResponse;
 import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.service.identity.UserService;
 import jakarta.validation.Valid;
@@ -43,15 +44,15 @@ public class UserController {
 
 
     @GetMapping("/profile/my-info")
-    ApiResponse<UserResponse> getMyInfo(){
-        return ApiResponse.<UserResponse>builder()
+    ApiResponse<GuestInfoResponse> getMyInfo(){
+        return ApiResponse.<GuestInfoResponse>builder()
                 .result(userService.getMyInfo())
                 .build();
     }
 
     @PutMapping("/profile/my-info/update")
-    ApiResponse<UserResponse> updateMyInfo(@RequestBody UserUpdateRequest request){
-        return ApiResponse.<UserResponse>builder()
+    ApiResponse<GuestInfoResponse> updateMyInfo(@RequestBody UserUpdateRequest request){
+        return ApiResponse.<GuestInfoResponse>builder()
                 .result(userService.updateMyInfo(request))
                 .build();
     }

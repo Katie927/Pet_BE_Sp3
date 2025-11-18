@@ -17,8 +17,8 @@ public interface CartItemMapper {
         var images = cartItem.getProductA()
                 .getVariant()
                 .getDetailImages();
-        if (images == null || images.size() <= 1 || images.get(1) == null) return null;
-        return images.get(0).getUrl();
+        if (images == null || images.isEmpty() || images.getFirst() == null) return null;
+        return images.getFirst().getUrl();
     }
 
 }

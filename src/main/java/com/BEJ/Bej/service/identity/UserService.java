@@ -3,6 +3,7 @@ package com.BEJ.Bej.service.identity;
 import com.BEJ.Bej.dto.request.identityRequest.UserCreationRequest;
 import com.BEJ.Bej.dto.request.identityRequest.UserUpdateRequest;
 import com.BEJ.Bej.dto.response.UserResponse;
+import com.BEJ.Bej.dto.response.guest.GuestInfoResponse;
 import com.BEJ.Bej.entity.identity.Role;
 import com.BEJ.Bej.entity.identity.User;
 import com.BEJ.Bej.exception.AppException;
@@ -69,7 +70,7 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
-    public UserResponse updateMyInfo(UserUpdateRequest request){
+    public GuestInfoResponse updateMyInfo(UserUpdateRequest request){
         System.out.println("Update my info");
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
@@ -80,15 +81,15 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
         }
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        return userMapper.toGuestInfoResponse(userRepository.save(user));
     }
 
-    public UserResponse getMyInfo(){
+    public GuestInfoResponse getMyInfo(){
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
         User user = userRepository.findByPhoneNumber(name).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        return userMapper.toUserResponse(user);
+        return userMapper.toGuestInfoResponse(user);
     }
 }

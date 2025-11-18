@@ -24,6 +24,9 @@ public class OrderDetailsResponse {
     LocalDate updatedAt;
     LocalDate orderAt;
 
+    int type;
+    int status;
+
     String description;
 
     double totalPrice;

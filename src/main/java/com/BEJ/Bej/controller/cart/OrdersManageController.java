@@ -1,16 +1,14 @@
 package com.BEJ.Bej.controller.cart;
 
 import com.BEJ.Bej.dto.request.ApiResponse;
+import com.BEJ.Bej.dto.request.cartRequest.OrderStatusRequest;
 import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
 import com.BEJ.Bej.dto.response.cartResponse.OrdersResponse;
 import com.BEJ.Bej.service.guest.CartService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +31,13 @@ public class OrdersManageController {
     ApiResponse<OrderDetailsResponse> getOrderDetails(@PathVariable String orderId){
         return ApiResponse.<OrderDetailsResponse>builder()
                 .result(cartService.getOrderDetails(orderId))
+                .build();
+    }
+
+    @PutMapping("/update-order-status/{orderId)")
+    ApiResponse<OrdersResponse> updateOrder(@RequestBody OrderStatusRequest request, @PathVariable String orderId){
+        return ApiResponse.<OrdersResponse>builder()
+                .result(cartService.updateOrderStatus())
                 .build();
     }
 

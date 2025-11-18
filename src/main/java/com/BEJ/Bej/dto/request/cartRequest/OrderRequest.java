@@ -13,13 +13,17 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderRequest {
 
+    String customerName;
+
     String phoneNumber;
     String email;
     String address;
 
     String description;
 
-    double totalPrice;
+//    double totalPrice;
     List<OrderItemRequest> items;
+
+    int type;
 
 }

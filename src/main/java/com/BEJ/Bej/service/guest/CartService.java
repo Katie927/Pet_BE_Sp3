@@ -1,6 +1,7 @@
 package com.BEJ.Bej.service.guest;
 
 import com.BEJ.Bej.dto.request.cartRequest.OrderRequest;
+import com.BEJ.Bej.dto.request.cartRequest.OrderStatusRequest;
 import com.BEJ.Bej.dto.response.cartResponse.CartItemResponse;
 import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
 import com.BEJ.Bej.dto.response.cartResponse.OrdersResponse;
@@ -126,7 +127,7 @@ public class CartService {
         return orders.stream().map(orderMapper::toOrderDetailsResponse).toList();
     }
 
-//  ======================================================================================
+//  =======================================MANAGE ORDER===============================================
     public List<OrdersResponse> getAllOrders(){
         return ordersRepository.findAllByOrderByOrderAtDesc().stream().map(orderMapper::toOrdersResponse).toList();
     }
@@ -135,5 +136,19 @@ public class CartService {
         return ordersRepository.findById(orderId).map(orderMapper::toOrderDetailsResponse)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
+
+    public OrdersResponse updateOrderStatus(OrderStatusRequest request, String orderId){
+
+        Orders orders = ordersRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        String description = orders.getDescription();
+        String newDescription = description + "\n" + request.getDescription();
+
+        orders.setDescription(newDescription);
+        orders.setStatus(request.getStatus());
+
+        return orderMapper.toOrdersResponse(ordersRepository.save(orders));
+    }
+
 
 }

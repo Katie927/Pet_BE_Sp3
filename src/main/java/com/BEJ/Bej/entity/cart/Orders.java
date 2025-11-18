@@ -24,6 +24,7 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
+    String customerName;
 
     String phoneNumber;
     String email;
