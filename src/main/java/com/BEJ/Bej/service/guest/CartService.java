@@ -141,10 +141,11 @@ public class CartService {
 
         Orders orders = ordersRepository.findById(orderId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        String description = orders.getDescription();
-        String newDescription = description + "\n" + request.getDescription();
-
-        orders.setDescription(newDescription);
+        if (request.getDescription() != null){
+            String description = orders.getDescription();
+            String newDescription = description + "\n" + request.getDescription();
+            orders.setDescription(newDescription);
+        }
         orders.setStatus(request.getStatus());
 
         return orderMapper.toOrdersResponse(ordersRepository.save(orders));

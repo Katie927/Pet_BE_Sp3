@@ -5,6 +5,7 @@ import com.BEJ.Bej.dto.request.cartRequest.OrderStatusRequest;
 import com.BEJ.Bej.dto.response.cartResponse.OrderDetailsResponse;
 import com.BEJ.Bej.dto.response.cartResponse.OrdersResponse;
 import com.BEJ.Bej.service.guest.CartService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,10 +35,11 @@ public class OrdersManageController {
                 .build();
     }
 
-    @PutMapping("/update-order-status/{orderId)")
+    @Transactional
+    @PutMapping("/update-order-status/{orderId}")
     ApiResponse<OrdersResponse> updateOrder(@RequestBody OrderStatusRequest request, @PathVariable String orderId){
         return ApiResponse.<OrdersResponse>builder()
-                .result(cartService.updateOrderStatus())
+                .result(cartService.updateOrderStatus(request, orderId))
                 .build();
     }
 
