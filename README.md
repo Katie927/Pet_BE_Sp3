@@ -1,4 +1,4 @@
-# DATN Backend (Bej) - Hệ Thống Quản Lý Bán Hàng
+# DATN Backend (Bej) - Hệ Thống Quản Lý Cửa hàng Bán & Sửa chữa điện thoại
 
 ## 📋 Tổng Quan Hệ Thống
 
