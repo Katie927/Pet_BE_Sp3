@@ -1,6 +1,6 @@
 # DATN Backend (Bej) - Hệ Thống Quản Lý Cửa hàng Bán & Sửa chữa điện thoại
 
-## 📋 Tổng Quan Hệ Thống
+##  Tổng Quan Hệ Thống
 
 **Bej** là một ứng dụng backend được xây dựng trên **Spring Boot 3.4.3** và **Java 21**, cung cấp các chức năng quản lý sản phẩm, đơn hàng cho một nền tảng bán hàng trực tuyến.
 
@@ -14,7 +14,7 @@
 
 ---
 
-## 🏗️ Cấu Trúc Project
+##  Cấu Trúc Project
 
 ```
 src/main/java/com/DATN/Bej/
@@ -44,7 +44,7 @@ src/main/java/com/DATN/Bej/
 
 ---
 
-## 📊 Cấu Trúc Cơ Sở Dữ Liệu
+##  Cấu Trúc Cơ Sở Dữ Liệu
 
 ### 1. **Identity Module** (Quản lý danh tính)
 | Entity | Mô Tả | Quan Hệ |
@@ -152,9 +152,9 @@ GET /manage/orders/get-all
 
 ---
 
-## 🔄 Các Chức Năng Chính & Luồng Logic
+##  Các Chức Năng Chính & Luồng Logic
 
-### 1️⃣ **Xác Thực & Phân Quyền** (Identity Management)
+### 1. **Xác Thực & Phân Quyền** (Identity Management)
 
 #### Endpoint: `/auth`
 ```
@@ -205,7 +205,7 @@ User
 
 ---
 
-### 2️⃣ **Quản Lý Sản Phẩm** (Product Management)
+### 2️. **Quản Lý Sản Phẩm** (Product Management)
 
 #### Controller Endpoints
 
@@ -287,7 +287,7 @@ getProductDetails(productId)
 
 ---
 
-### 3️⃣ **Giỏ Hàng & Đơn Hàng** (Cart & Orders)
+### 3️. **Giỏ Hàng & Đơn Hàng** (Cart & Orders)
 
 #### Controller Endpoints (/cart)
 
@@ -357,7 +357,7 @@ Orders table fields:
 
 ---
 
-### 6️⃣ **Danh Mục Sản Phẩm** (Categories)
+### 4. **Danh Mục Sản Phẩm** (Categories)
 
 #### Category Management (/admin/category)
 ```
@@ -373,7 +373,7 @@ POST /admin/category/add
 
 ---
 
-### 7️⃣ **Quản Lý Vai Trò & Quyền** (Roles & Permissions)
+### 5. **Quản Lý Vai Trò & Quyền** (Roles & Permissions)
 
 #### Role Management (/admin/roles)
 ```
@@ -441,7 +441,7 @@ java -jar target/Bej-0.0.1-SNAPSHOT.jar
 
 ---
 
-## 📦 Entity Relationships Diagram
+##  Entity Relationships Diagram
 
 ```
 User (1) ──── (N) Orders
@@ -459,7 +459,7 @@ Product (1) ──── (N) ProductVariant
 
 ---
 
-## 🔐 Security Features
+##  Security Features
 
 1. **JWT Token Authentication**
    - CustomJwtDecoder: Token validation & signature verification
@@ -482,7 +482,7 @@ Product (1) ──── (N) ProductVariant
 
 ---
 
-## 📝 API Response Format
+##  API Response Format
 
 ### Success Response
 ```json
@@ -513,7 +513,7 @@ Product (1) ──── (N) ProductVariant
 
 ---
 
-## 🧪 Testing Entities with CommandLineRunner
+##  Testing Entities with CommandLineRunner
 
 Run the application to see detected entities and their record counts:
 
@@ -533,7 +533,7 @@ Detected 17 JPA entities:
 
 ---
 
-## 🔄 Key Business Flows
+##  Key Business Flows
 
 ### Flow 1: Product Purchase
 ```
@@ -575,7 +575,7 @@ Detected 17 JPA entities:
 
 ---
 
-## 📚 Technology Stack Summary
+##  Technology Stack Summary
 
 | Layer | Technology |
 |-------|-----------|
@@ -592,7 +592,7 @@ Detected 17 JPA entities:
 
 ---
 
-## 📞 Key Contact Points
+##  Key Contact Points
 
 - **Admin API Base**: `http://localhost:8080/bej3`
 - **Database**: `localhost:3306/new_bej_sp3`
@@ -600,7 +600,7 @@ Detected 17 JPA entities:
 
 ---
 
-## 🎯 Future Enhancements
+##  Future Enhancements
 
 1. **Inventory Management**: Track stock levels per ProductAttribute
 2. **User Reviews & Ratings**: Add reviews system for products
