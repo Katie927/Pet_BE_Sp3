@@ -1,7 +1,7 @@
 package com.BEJ.Bej.config;
 
-import com.BEJ.Bej.dto.request.ApiResponse;
-import com.BEJ.Bej.exception.ErrorCode;
+import com.BEJ.Bej.common.ApiResponse;
+import com.BEJ.Bej.common.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

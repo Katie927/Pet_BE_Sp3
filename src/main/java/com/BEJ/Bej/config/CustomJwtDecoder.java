@@ -1,7 +1,7 @@
 package com.BEJ.Bej.config;
 
-import com.BEJ.Bej.dto.request.identityRequest.IntrospectRequest;
-import com.BEJ.Bej.service.identity.AuthenticationService;
+import com.BEJ.Bej.identity.dto.request.IntrospectRequest;
+import com.BEJ.Bej.identity.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

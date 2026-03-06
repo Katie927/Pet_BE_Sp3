@@ -1,8 +1,8 @@
 package com.BEJ.Bej.config;
 
-import com.BEJ.Bej.entity.identity.User;
-import com.BEJ.Bej.enums.Role;
-import com.BEJ.Bej.repository.UserRepository;
+import com.BEJ.Bej.identity.entity.User;
+import com.BEJ.Bej.identity.enums.Role;
+import com.BEJ.Bej.identity.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
